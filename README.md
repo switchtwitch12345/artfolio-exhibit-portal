@@ -1,10 +1,39 @@
-# Welcome to your Lovable project
 
-## Project info
+# ArtFolio - Student Art Gallery Portal
+
+## Project Overview
+
+ArtFolio is a modern web application designed to showcase student artwork from your college. It features a clean, responsive interface inspired by professional gallery websites.
 
 **URL**: https://lovable.dev/projects/cd2ca16f-6215-4576-9d4e-0b4cda9eb847
 
-## How can I edit this code?
+## Features
+
+- **Featured Artwork Showcase**: Highlighting exceptional student work on the homepage
+- **Gallery View**: Browse all submitted artwork with filtering capabilities
+- **Individual Artwork Pages**: Detailed view of each piece with artist information
+- **Authentication**: Secure sign-up and login for students and faculty
+- **Responsive Design**: Optimized viewing experience across all device sizes
+
+## Technologies Used
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui components
+- Tailwind CSS
+- React Router
+- Framer Motion for animations
+
+## How to Use
+
+The application allows visitors to:
+- Browse the featured artwork carousel on the homepage
+- Explore the full gallery with filtering options
+- View detailed information about each artwork and artist
+- Create an account or log in to access additional features
+
+## How to Edit This Code
 
 There are several ways of editing your application.
 
@@ -36,34 +65,7 @@ npm i
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
+## Deployment
 
 Simply open [Lovable](https://lovable.dev/projects/cd2ca16f-6215-4576-9d4e-0b4cda9eb847) and click on Share -> Publish.
 
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
