@@ -15,23 +15,22 @@ const Index = () => {
     <AnimatedLayout>
       <FeaturedArt artworks={artworks} />
       
-      <section className="py-20">
-        <div className="container px-6 mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="text-xs font-medium bg-gallery-100 text-gallery-700 rounded-full px-3 py-1 inline-block mb-3">
-                  Discover
-                </div>
-                <h2 className="text-3xl md:text-4xl font-semibold text-balance">
-                  Recent Student Artwork
-                </h2>
-              </motion.div>
-            </div>
+      <section className="index-section">
+        <div className="container">
+          <div className="index-header">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="index-tag">
+                Discover
+              </div>
+              <h2 className="index-title">
+                Recent Student Artwork
+              </h2>
+            </motion.div>
+            
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -39,15 +38,15 @@ const Index = () => {
             >
               <Link
                 to="/gallery"
-                className="mt-4 md:mt-0 inline-flex items-center font-medium text-sm text-gallery-900 hover:text-gallery-600 transition-colors duration-300"
+                className="index-view-all"
               >
                 View All Gallery
-                <ArrowRight size={16} className="ml-1" />
+                <ArrowRight size={16} />
               </Link>
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="index-grid">
             {recentArtworks.map((artwork, index) => (
               <ArtCard key={artwork.id} artwork={artwork} index={index} />
             ))}
@@ -55,26 +54,26 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gallery-50">
-        <div className="container px-6 mx-auto">
+      <section className="index-cta">
+        <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto mb-12"
+            className="index-cta-content"
           >
-            <div className="text-xs font-medium bg-gallery-200 text-gallery-700 rounded-full px-3 py-1 inline-block mb-3">
+            <div className="index-cta-tag">
               Join Us
             </div>
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-balance">
+            <h2 className="index-cta-title">
               Showcase Your Artistic Journey
             </h2>
-            <p className="text-gallery-700 text-lg mb-8 text-balance">
+            <p className="index-cta-description">
               Create an account to upload your artwork and become part of our growing community of student artists.
             </p>
             <Link
               to="/auth"
-              className="btn-primary inline-flex items-center"
+              className="btn-primary"
             >
               Sign Up Now
               <ArrowRight size={16} className="ml-2" />

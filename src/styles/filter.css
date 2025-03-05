@@ -1,0 +1,105 @@
+
+.filter-container {
+  position: relative;
+}
+
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filter-button {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid #ececf0;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 0.625rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transition-standard);
+}
+
+.filter-button:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-button-content {
+  display: flex;
+  align-items: center;
+}
+
+.filter-icon {
+  margin-right: 0.5rem;
+  color: #9ea0bc;
+}
+
+.filter-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1a1a26;
+}
+
+.filter-chevron {
+  color: #9ea0bc;
+  transition: transform 0.3s ease;
+}
+
+.filter-chevron.open {
+  transform: rotate(180deg);
+}
+
+.filter-clear-button {
+  display: flex;
+  align-items: center;
+  background-color: #1a1a26;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition-standard);
+}
+
+.filter-clear-button:hover {
+  background-color: #333344;
+}
+
+.filter-clear-icon {
+  margin-right: 0.25rem;
+}
+
+.filter-dropdown {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  margin-top: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid #ececf0;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.filter-option {
+  width: 100%;
+  text-align: left;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.filter-option:hover {
+  background-color: #f7f7f8;
+}
+
+.filter-option.active {
+  background-color: #ececf0;
+  color: #1a1a26;
+  font-weight: 500;
+}

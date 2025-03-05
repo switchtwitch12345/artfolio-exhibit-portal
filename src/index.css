@@ -1,99 +1,10 @@
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-
-    --radius: 0.85rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  * {
-    @apply border-border;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 50% 0%, rgba(240, 240, 245, 0.2) 0%, rgba(255, 255, 255, 0) 75%);
-    background-attachment: fixed;
-  }
-
-  /* Apple-style transitions */
-  .page-transition-enter {
-    @apply opacity-0 transform translate-y-4;
-  }
-  .page-transition-enter-active {
-    @apply opacity-100 transform translate-y-0 transition-all duration-500 ease-apple;
-  }
-  .page-transition-exit {
-    @apply opacity-100;
-  }
-  .page-transition-exit-active {
-    @apply opacity-0 transition-opacity duration-300 ease-apple;
-  }
-
-  .glassmorphism {
-    @apply bg-white/80 backdrop-blur-lg border border-white/30 shadow-sm;
-  }
-
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-@layer components {
-  .btn-primary {
-    @apply bg-black text-white rounded-full px-8 py-3 font-medium transition-all duration-300 ease-apple hover:bg-gray-900 active:scale-[0.98];
-  }
-  
-  .btn-secondary {
-    @apply bg-white/50 backdrop-blur-sm text-black rounded-full px-6 py-2 font-medium transition-all duration-300 ease-apple border border-gray-200 hover:bg-white/80 active:scale-[0.98];
-  }
-
-  .art-card {
-    @apply bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden transition-all duration-500 ease-apple hover:shadow-lg;
-  }
-
-  .input-field {
-    @apply bg-white/50 backdrop-blur-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-300 ease-apple;
-  }
-}
+@import './styles/main.css';
+@import './styles/navbar.css';
+@import './styles/artcard.css';
+@import './styles/featured-art.css';
+@import './styles/filter.css';
+@import './styles/animated-layout.css';
+@import './styles/gallery.css';
+@import './styles/artwork.css';
+@import './styles/index.css';

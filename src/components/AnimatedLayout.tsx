@@ -44,7 +44,7 @@ const AnimatedLayout = ({ children }: AnimatedLayoutProps) => {
           animate="animate"
           exit="exit"
           variants={pageVariants}
-          className="pt-24" // Account for fixed navbar
+          className="animated-main"
         >
           {children}
         </motion.main>

@@ -22,32 +22,31 @@ const ArtCard = ({ artwork, index }: ArtCardProps) => {
           delay: index * 0.1
         }
       }}
-      whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      className="art-card group h-full"
+      className="art-card"
     >
-      <Link to={`/artwork/${artwork.id}`} className="block h-full">
-        <div className="aspect-[4/5] overflow-hidden">
+      <Link to={`/artwork/${artwork.id}`} className="art-card-link">
+        <div className="art-card-image-container">
           <img
             src={artwork.imageUrl}
             alt={artwork.title}
-            className="h-full w-full object-cover transition-transform duration-700 ease-apple group-hover:scale-105"
+            className="art-card-image"
             loading="lazy"
           />
         </div>
-        <div className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="text-xs font-medium bg-gallery-50 text-gallery-700 rounded-full px-3 py-1">
+        <div className="art-card-content">
+          <div className="art-card-tag-container">
+            <div className="art-card-medium">
               {artwork.medium.split(',')[0]}
             </div>
-            <div className="text-xs text-gallery-500">{artwork.year}</div>
+            <div className="art-card-year">{artwork.year}</div>
           </div>
-          <h3 className="text-lg font-medium text-gallery-900 mb-1">
+          <h3 className="art-card-title">
             {artwork.title}
           </h3>
-          <p className="text-sm text-gallery-600 mb-3">
+          <p className="art-card-artist">
             {artwork.student.name}
           </p>
-          <p className="text-sm text-gallery-500 line-clamp-2">
+          <p className="art-card-description">
             {artwork.description}
           </p>
         </div>

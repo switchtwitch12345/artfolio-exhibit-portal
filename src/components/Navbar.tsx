@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
@@ -29,43 +28,25 @@ const Navbar = () => {
   ];
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-apple",
-        isScrolled
-          ? "py-3 glassmorphism"
-          : "py-6 bg-transparent"
-      )}
-    >
-      <div className="container px-6 mx-auto flex items-center justify-between">
-        <Link
-          to="/"
-          className="text-xl font-semibold tracking-tight transition-opacity duration-300 ease-apple hover:opacity-80"
-        >
+    <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="container navbar-container">
+        <Link to="/" className="navbar-logo">
           artfolio
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="navbar-nav">
           {navigationLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
-              className={cn(
-                "text-sm font-medium transition-all duration-300 ease-apple hover:text-black/70",
-                location.pathname === link.path
-                  ? "text-black"
-                  : "text-gray-500"
-              )}
+              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''}`}
             >
               {link.name}
             </Link>
           ))}
-          <div className="h-4 w-px bg-gray-300 mx-1" />
-          <Link
-            to="/auth"
-            className="text-sm font-medium px-5 py-2 rounded-full bg-black text-white transition-all duration-300 ease-apple hover:bg-black/80 active:scale-[0.98]"
-          >
+          <div className="navbar-separator" />
+          <Link to="/auth" className="navbar-sign-in">
             Sign In
           </Link>
         </nav>
@@ -73,7 +54,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 rounded-full transition-colors duration-300 ease-apple hover:bg-black/5"
+          className="navbar-menu-button"
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? (
@@ -85,31 +66,18 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={cn(
-          "fixed inset-0 top-[60px] bg-white/95 backdrop-blur-lg z-40 transition-transform duration-500 ease-apple md:hidden",
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
-        <nav className="container h-full flex flex-col items-center justify-center space-y-8 p-6">
+      <div className={`navbar-mobile-menu ${isMobileMenuOpen ? 'visible' : 'hidden'}`}>
+        <nav className="navbar-mobile-nav">
           {navigationLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
-              className={cn(
-                "text-lg font-medium transition-colors duration-300 ease-apple",
-                location.pathname === link.path
-                  ? "text-black"
-                  : "text-gray-500"
-              )}
+              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''}`}
             >
               {link.name}
             </Link>
           ))}
-          <Link
-            to="/auth"
-            className="mt-4 text-lg font-medium w-full max-w-xs text-center px-5 py-3 rounded-full bg-black text-white transition-all duration-300 ease-apple hover:bg-black/80 active:scale-[0.98]"
-          >
+          <Link to="/auth" className="navbar-mobile-sign-in">
             Sign In
           </Link>
         </nav>

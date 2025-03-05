@@ -66,7 +66,7 @@ const FeaturedArt = ({ artworks }: FeaturedArtProps) => {
 
   return (
     <div 
-      className="relative h-[85vh] overflow-hidden"
+      className="featured-art"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -82,67 +82,65 @@ const FeaturedArt = ({ artworks }: FeaturedArtProps) => {
             duration: 0.8,
             ease: [0.23, 1, 0.32, 1],
           }}
-          className="absolute inset-0"
+          className="featured-slide"
         >
-          <div className="relative h-full w-full">
-            <div className="absolute inset-0 bg-black/10 z-10" />
-            <img
-              src={featured[currentIndex].imageUrl}
-              alt={featured[currentIndex].title}
-              className="h-full w-full object-cover object-center"
-            />
-            <div className="absolute inset-0 z-20 flex items-end">
-              <div className="container mx-auto px-6 pb-20 md:pb-32">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
-                  className="glassmorphism p-8 max-w-xl rounded-2xl"
+          <div className="featured-overlay" />
+          <img
+            src={featured[currentIndex].imageUrl}
+            alt={featured[currentIndex].title}
+            className="featured-image"
+          />
+          <div className="featured-content-wrapper">
+            <div className="container">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+                className="featured-content"
+              >
+                <div className="featured-label">
+                  Featured Work
+                </div>
+                <h2 className="featured-title">
+                  {featured[currentIndex].title}
+                </h2>
+                <p className="featured-artist">
+                  By {featured[currentIndex].student.name} · {featured[currentIndex].year}
+                </p>
+                <p className="featured-description">
+                  {featured[currentIndex].description}
+                </p>
+                <Link 
+                  to={`/artwork/${featured[currentIndex].id}`}
+                  className="btn-primary featured-button"
                 >
-                  <div className="bg-black/80 text-white text-xs font-medium rounded-full px-3 py-1 inline-block mb-3">
-                    Featured Work
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-semibold mb-3 text-black">
-                    {featured[currentIndex].title}
-                  </h2>
-                  <p className="text-sm font-medium text-gallery-700 mb-4">
-                    By {featured[currentIndex].student.name} · {featured[currentIndex].year}
-                  </p>
-                  <p className="text-gallery-800 mb-6 line-clamp-3">
-                    {featured[currentIndex].description}
-                  </p>
-                  <Link 
-                    to={`/artwork/${featured[currentIndex].id}`}
-                    className="btn-primary inline-flex items-center"
-                  >
-                    View Artwork 
-                    <ArrowRight size={16} className="ml-2" />
-                  </Link>
-                </motion.div>
-              </div>
+                  View Artwork 
+                  <ArrowRight size={16} />
+                </Link>
+              </motion.div>
             </div>
           </div>
         </motion.div>
       </AnimatePresence>
       
-      <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+      <div className="featured-controls">
         <button
           onClick={handlePrev}
-          className="glassmorphism w-12 h-12 rounded-full flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+          className="featured-control-button"
           aria-label="Previous"
         >
           <ArrowLeft size={18} />
         </button>
         <button
           onClick={handleNext}
-          className="glassmorphism w-12 h-12 rounded-full flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity duration-300"
+          className="featured-control-button"
           aria-label="Next"
         >
           <ArrowRight size={18} />
         </button>
       </div>
       
-      <div className="absolute bottom-8 left-8 z-30 flex gap-2">
+      <div className="featured-dots">
         {featured.map((_, index) => (
           <button
             key={index}
@@ -150,11 +148,7 @@ const FeaturedArt = ({ artworks }: FeaturedArtProps) => {
               setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex 
-                ? "bg-black" 
-                : "bg-black/30 hover:bg-black/50"
-            }`}
+            className={`featured-dot ${index === currentIndex ? 'active' : ''}`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
