@@ -1,13 +1,42 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import AnimatedLayout from "@/components/AnimatedLayout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, Check, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { login, register } from "@/services/authService";
 import { useAuth } from "@/context/AuthContext";
 import "../styles/auth.css";
+
+const FloatingBubbles = () => {
+  return (
+    <>
+      {[...Array(6)].map((_, index) => {
+        const size = Math.random() * 150 + 50;
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 10 + 15;
+        
+        return (
+          <div
+            key={index}
+            className="floating-bubble"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${left}%`,
+              top: `${top}%`,
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+              opacity: Math.random() * 0.2 + 0.1,
+            }}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -71,6 +100,8 @@ const Auth = () => {
 
   return (
     <div className="auth-container">
+      <FloatingBubbles />
+      
       <div className="auth-wrapper">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -94,7 +125,7 @@ const Auth = () => {
               className="auth-subtitle"
             >
               {isLogin 
-                ? "Sign in to access your account" 
+                ? "Sign in to access your ArtFolio" 
                 : "Join our community of student artists"
               }
             </motion.p>
@@ -111,18 +142,16 @@ const Auth = () => {
                 <label htmlFor="name" className="form-label">
                   Full Name
                 </label>
-                <div className="password-input-wrapper">
-                  <input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="form-input"
-                    placeholder="Enter your full name"
-                    required={!isLogin}
-                  />
-                  <User size={16} className="password-toggle-btn" style={{ pointerEvents: 'none' }} />
-                </div>
+                <User size={16} className="input-icon" />
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="form-input"
+                  placeholder="Enter your full name"
+                  required={!isLogin}
+                />
               </motion.div>
             )}
             
@@ -135,18 +164,16 @@ const Auth = () => {
               <label htmlFor="email" className="form-label">
                 Email Address
               </label>
-              <div className="password-input-wrapper">
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="form-input"
-                  placeholder="Enter your email"
-                  required
-                />
-                <Mail size={16} className="password-toggle-btn" style={{ pointerEvents: 'none' }} />
-              </div>
+              <Mail size={16} className="input-icon" />
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+                placeholder="Enter your email"
+                required
+              />
             </motion.div>
             
             <motion.div 
@@ -159,6 +186,7 @@ const Auth = () => {
                 Password
               </label>
               <div className="password-input-wrapper">
+                <Lock size={16} className="input-icon" />
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -168,7 +196,6 @@ const Auth = () => {
                   placeholder={isLogin ? "Enter your password" : "Create a password"}
                   required
                 />
-                <Lock size={16} className="password-toggle-btn" style={{ right: '2.5rem', pointerEvents: 'none' }} />
                 <button
                   type="button"
                   className="password-toggle-btn"

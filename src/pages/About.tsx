@@ -17,19 +17,23 @@ const About = () => {
       sectionsRef.current.forEach((section, index) => {
         if (!section) return;
 
-        const sectionTop = section.offsetTop;
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top + scrollPosition - viewportHeight;
         const sectionHeight = section.offsetHeight;
-        const sectionBottom = sectionTop + sectionHeight;
+        const sectionBottom = sectionTop + sectionHeight + viewportHeight;
         
         // Calculate how far into the section we've scrolled (0 to 1)
         const scrollProgress = Math.max(0, Math.min(1, 
-          (scrollPosition - sectionTop + viewportHeight * 0.5) / (sectionHeight + viewportHeight * 0.5)
+          (scrollPosition - sectionTop) / (sectionBottom - sectionTop)
         ));
 
         // Apply scale effect similar to Apple's website
         if (section.classList.contains('zoom-section')) {
-          section.style.transform = `scale(${1 + scrollProgress * 0.05})`;
-          section.style.opacity = `${0.5 + scrollProgress * 0.5}`;
+          // Start slightly zoomed out and zoom in as we scroll
+          const scale = 0.95 + (scrollProgress * 0.1);
+          const opacity = 0.7 + (scrollProgress * 0.3);
+          section.style.transform = `scale(${scale})`;
+          section.style.opacity = `${opacity}`;
         }
 
         // Parallax text effect
@@ -37,12 +41,15 @@ const About = () => {
         textElements.forEach((el) => {
           const element = el as HTMLElement;
           const speed = parseFloat(element.dataset.speed || "0.1");
-          element.style.transform = `translateY(${scrollProgress * 100 * speed}px)`;
+          const yOffset = (scrollProgress - 0.5) * speed * 100;
+          element.style.transform = `translateY(${yOffset}px)`;
         });
       });
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call to set positions
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
