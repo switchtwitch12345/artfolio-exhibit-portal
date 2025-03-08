@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import AnimatedLayout from "@/components/AnimatedLayout";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Check, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { login, register } from "@/services/authService";
 import { useAuth } from "@/context/AuthContext";
@@ -70,33 +70,48 @@ const Auth = () => {
   };
 
   return (
-    <AnimatedLayout>
-      <div className="auth-container">
-        <div className="auth-wrapper">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="auth-card"
-          >
-            <div className="auth-header">
-              <h1 className="auth-title">
-                {isLogin ? "Welcome back" : "Create an account"}
-              </h1>
-              <p className="auth-subtitle">
-                {isLogin 
-                  ? "Sign in to access your account" 
-                  : "Join our community of student artists"
-                }
-              </p>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="auth-form">
-              {!isLogin && (
-                <div className="form-group">
-                  <label htmlFor="name" className="form-label">
-                    Full Name
-                  </label>
+    <div className="auth-container">
+      <div className="auth-wrapper">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+          className="auth-card"
+        >
+          <div className="auth-header">
+            <motion.h1 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="auth-title"
+            >
+              {isLogin ? "Welcome back" : "Create an account"}
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="auth-subtitle"
+            >
+              {isLogin 
+                ? "Sign in to access your account" 
+                : "Join our community of student artists"
+              }
+            </motion.p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="auth-form">
+            {!isLogin && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className="form-group"
+              >
+                <label htmlFor="name" className="form-label">
+                  Full Name
+                </label>
+                <div className="password-input-wrapper">
                   <input
                     id="name"
                     type="text"
@@ -106,13 +121,21 @@ const Auth = () => {
                     placeholder="Enter your full name"
                     required={!isLogin}
                   />
+                  <User size={16} className="password-toggle-btn" style={{ pointerEvents: 'none' }} />
                 </div>
-              )}
-              
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
-                  Email Address
-                </label>
+              </motion.div>
+            )}
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: isLogin ? 0.4 : 0.5, duration: 0.6 }}
+              className="form-group"
+            >
+              <label htmlFor="email" className="form-label">
+                Email Address
+              </label>
+              <div className="password-input-wrapper">
                 <input
                   id="email"
                   type="email"
@@ -122,86 +145,111 @@ const Auth = () => {
                   placeholder="Enter your email"
                   required
                 />
+                <Mail size={16} className="password-toggle-btn" style={{ pointerEvents: 'none' }} />
               </div>
-              
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <div className="password-input-wrapper">
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="form-input"
-                    placeholder={isLogin ? "Enter your password" : "Create a password"}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle-btn"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-              
-              {isLogin && (
-                <div className="forgot-password-wrapper">
-                  <button
-                    type="button"
-                    className="forgot-password-btn"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-              )}
-              
-              <button
-                type="submit"
-                disabled={loading}
-                className="submit-btn"
-              >
-                {loading ? (
-                  <div className="spinner" />
-                ) : (
-                  <>
-                    {isLogin ? "Sign In" : "Create Account"}
-                    <ArrowRight size={16} className="arrow-icon" />
-                  </>
-                )}
-              </button>
-            </form>
+            </motion.div>
             
-            <div className="auth-footer">
-              <p className="toggle-mode-text">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: isLogin ? 0.5 : 0.6, duration: 0.6 }}
+              className="form-group"
+            >
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="form-input"
+                  placeholder={isLogin ? "Enter your password" : "Create a password"}
+                  required
+                />
+                <Lock size={16} className="password-toggle-btn" style={{ right: '2.5rem', pointerEvents: 'none' }} />
                 <button
                   type="button"
-                  onClick={toggleAuthMode}
-                  className="toggle-mode-btn"
+                  className="password-toggle-btn"
+                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {isLogin ? "Sign up" : "Sign in"}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
-              </p>
-            </div>
-            
-            {!isLogin && (
-              <div className="terms-container">
-                <p className="terms-text">
-                  <Check size={16} className="terms-icon" />
-                  <span>
-                    By creating an account, you agree to our Terms of Service and Privacy Policy
-                  </span>
-                </p>
               </div>
+            </motion.div>
+            
+            {isLogin && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                className="forgot-password-wrapper"
+              >
+                <button
+                  type="button"
+                  className="forgot-password-btn"
+                >
+                  Forgot password?
+                </button>
+              </motion.div>
             )}
+            
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: isLogin ? 0.7 : 0.8, duration: 0.6 }}
+              type="submit"
+              disabled={loading}
+              className="submit-btn"
+            >
+              {loading ? (
+                <div className="spinner" />
+              ) : (
+                <>
+                  {isLogin ? "Sign In" : "Create Account"}
+                  <ArrowRight size={16} className="arrow-icon" />
+                </>
+              )}
+            </motion.button>
+          </form>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            className="auth-footer"
+          >
+            <p className="toggle-mode-text">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              <button
+                type="button"
+                onClick={toggleAuthMode}
+                className="toggle-mode-btn"
+              >
+                {isLogin ? "Sign up" : "Sign in"}
+              </button>
+            </p>
           </motion.div>
-        </div>
+          
+          {!isLogin && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.6 }}
+              className="terms-container"
+            >
+              <p className="terms-text">
+                <Check size={16} className="terms-icon" />
+                <span>
+                  By creating an account, you agree to our Terms of Service and Privacy Policy
+                </span>
+              </p>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
-    </AnimatedLayout>
+    </div>
   );
 };
 
