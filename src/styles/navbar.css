@@ -71,6 +71,8 @@
   color: white;
   transition: var(--transition-standard);
   margin-left: 2rem;
+  border: none;
+  cursor: pointer;
 }
 
 .navbar-sign-in:hover {
@@ -144,6 +146,8 @@
   background-color: var(--color-primary);
   color: white;
   transition: var(--transition-standard);
+  border: none;
+  cursor: pointer;
 }
 
 .navbar-mobile-sign-in:hover {

@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,10 @@ const Navbar = () => {
     { name: "About", path: "/about" },
   ];
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
@@ -46,9 +52,15 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="navbar-separator" />
-          <Link to="/auth" className="navbar-sign-in">
-            Sign In
-          </Link>
+          {isAuthenticated ? (
+            <button onClick={handleLogout} className="navbar-sign-in">
+              Log Out
+            </button>
+          ) : (
+            <Link to="/auth" className="navbar-sign-in">
+              Sign In
+            </Link>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -77,9 +89,15 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          <Link to="/auth" className="navbar-mobile-sign-in">
-            Sign In
-          </Link>
+          {isAuthenticated ? (
+            <button onClick={handleLogout} className="navbar-mobile-sign-in">
+              Log Out
+            </button>
+          ) : (
+            <Link to="/auth" className="navbar-mobile-sign-in">
+              Sign In
+            </Link>
+          )}
         </nav>
       </div>
     </header>
