@@ -5,6 +5,9 @@ import AnimatedLayout from "@/components/AnimatedLayout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
 import { toast } from "sonner";
+import { login, register } from "@/services/authService";
+import { useAuth } from "@/context/AuthContext";
+import "../styles/auth.css";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,6 +15,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUser } = useAuth();
   
   // Form states
   const [email, setEmail] = useState("");
@@ -29,20 +33,32 @@ const Auth = () => {
     
     setLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      let userData;
       
       if (isLogin) {
+        userData = await login({ email, password });
         toast.success("Successfully logged in");
       } else {
+        userData = await register({ name, email, password });
         toast.success("Account created successfully");
       }
+      
+      // Set the user in context
+      setUser(userData);
       
       // Navigate to the page they came from or to the gallery
       const from = location.state?.from?.pathname || "/gallery";
       navigate(from);
-    }, 1500);
+    } catch (error) {
+      let errorMessage = "An error occurred";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
   
   const toggleAuthMode = () => {
@@ -55,19 +71,19 @@ const Auth = () => {
 
   return (
     <AnimatedLayout>
-      <div className="min-h-[85vh] flex items-center justify-center py-12">
-        <div className="container px-6 mx-auto">
+      <div className="auth-container">
+        <div className="auth-wrapper">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-md mx-auto glassmorphism rounded-2xl p-8 md:p-10"
+            className="auth-card"
           >
-            <div className="text-center mb-8">
-              <h1 className="text-2xl md:text-3xl font-semibold mb-3">
+            <div className="auth-header">
+              <h1 className="auth-title">
                 {isLogin ? "Welcome back" : "Create an account"}
               </h1>
-              <p className="text-gallery-700">
+              <p className="auth-subtitle">
                 {isLogin 
                   ? "Sign in to access your account" 
                   : "Join our community of student artists"
@@ -75,10 +91,10 @@ const Auth = () => {
               </p>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="auth-form">
               {!isLogin && (
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gallery-900 mb-1">
+                <div className="form-group">
+                  <label htmlFor="name" className="form-label">
                     Full Name
                   </label>
                   <input
@@ -86,15 +102,15 @@ const Auth = () => {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="input-field w-full"
+                    className="form-input"
                     placeholder="Enter your full name"
                     required={!isLogin}
                   />
                 </div>
               )}
               
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gallery-900 mb-1">
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
                   Email Address
                 </label>
                 <input
@@ -102,29 +118,29 @@ const Auth = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-field w-full"
+                  className="form-input"
                   placeholder="Enter your email"
                   required
                 />
               </div>
               
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gallery-900 mb-1">
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
-                <div className="relative">
+                <div className="password-input-wrapper">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-field w-full pr-10"
+                    className="form-input"
                     placeholder={isLogin ? "Enter your password" : "Create a password"}
                     required
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gallery-500 hover:text-gallery-700 transition-colors duration-200"
+                    className="password-toggle-btn"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -133,10 +149,10 @@ const Auth = () => {
               </div>
               
               {isLogin && (
-                <div className="text-right">
+                <div className="forgot-password-wrapper">
                   <button
                     type="button"
-                    className="text-sm text-gallery-700 hover:text-gallery-900 transition-colors duration-200"
+                    className="forgot-password-btn"
                   >
                     Forgot password?
                   </button>
@@ -146,26 +162,26 @@ const Auth = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary w-full flex items-center justify-center"
+                className="submit-btn"
               >
                 {loading ? (
-                  <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                  <div className="spinner" />
                 ) : (
                   <>
                     {isLogin ? "Sign In" : "Create Account"}
-                    <ArrowRight size={16} className="ml-2" />
+                    <ArrowRight size={16} className="arrow-icon" />
                   </>
                 )}
               </button>
             </form>
             
-            <div className="mt-8 text-center">
-              <p className="text-gallery-700">
+            <div className="auth-footer">
+              <p className="toggle-mode-text">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}
                 <button
                   type="button"
                   onClick={toggleAuthMode}
-                  className="ml-1 text-black font-medium hover:text-gallery-700 transition-colors duration-200"
+                  className="toggle-mode-btn"
                 >
                   {isLogin ? "Sign up" : "Sign in"}
                 </button>
@@ -173,9 +189,9 @@ const Auth = () => {
             </div>
             
             {!isLogin && (
-              <div className="mt-8 pt-6 border-t border-gallery-100">
-                <p className="text-sm text-gallery-500 flex items-start">
-                  <Check size={16} className="text-gallery-500 mr-2 mt-0.5 flex-shrink-0" />
+              <div className="terms-container">
+                <p className="terms-text">
+                  <Check size={16} className="terms-icon" />
                   <span>
                     By creating an account, you agree to our Terms of Service and Privacy Policy
                   </span>
