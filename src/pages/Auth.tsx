@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -46,7 +45,6 @@ const Auth = () => {
   const location = useLocation();
   const { setUser } = useAuth();
   
-  // Form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -54,7 +52,6 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simple validation
     if (!email || !password || (!isLogin && !name)) {
       toast.error("Please fill in all fields");
       return;
@@ -73,10 +70,8 @@ const Auth = () => {
         toast.success("Account created successfully");
       }
       
-      // Set the user in context
       setUser(userData);
       
-      // Navigate to the page they came from or to the gallery
       const from = location.state?.from?.pathname || "/gallery";
       navigate(from);
     } catch (error) {
@@ -92,7 +87,6 @@ const Auth = () => {
   
   const toggleAuthMode = () => {
     setIsLogin(!isLogin);
-    // Reset form fields when switching
     setEmail("");
     setPassword("");
     setName("");
@@ -142,16 +136,18 @@ const Auth = () => {
                 <label htmlFor="name" className="form-label">
                   Full Name
                 </label>
-                <User size={16} className="input-icon" />
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="form-input"
-                  placeholder="Enter your full name"
-                  required={!isLogin}
-                />
+                <div className="password-input-wrapper">
+                  <User size={16} className="input-icon" />
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-input"
+                    placeholder="Enter your full name"
+                    required={!isLogin}
+                  />
+                </div>
               </motion.div>
             )}
             
@@ -164,16 +160,18 @@ const Auth = () => {
               <label htmlFor="email" className="form-label">
                 Email Address
               </label>
-              <Mail size={16} className="input-icon" />
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
-                placeholder="Enter your email"
-                required
-              />
+              <div className="password-input-wrapper">
+                <Mail size={16} className="input-icon" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-input"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
             </motion.div>
             
             <motion.div 
