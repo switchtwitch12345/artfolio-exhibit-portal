@@ -46,6 +46,12 @@ const generateToken = (id) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    
+    console.log('Registration attempt:', { name, email });
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please fill all required fields' });
+    }
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
@@ -72,13 +78,19 @@ app.post('/api/auth/register', async (req, res) => {
     }
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Server error during registration' });
+    res.status(500).json({ message: `Server error during registration: ${error.message}` });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    console.log('Login attempt:', { email });
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide email and password' });
+    }
 
     // Find user by email
     const user = await User.findOne({ email }).select('+password');
@@ -100,8 +112,13 @@ app.post('/api/auth/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error during login' });
+    res.status(500).json({ message: `Server error during login: ${error.message}` });
   }
+});
+
+// Debug endpoint to check server status
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'Server is running' });
 });
 
 // Serve static assets in production

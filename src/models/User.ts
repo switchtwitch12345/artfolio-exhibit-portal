@@ -41,19 +41,29 @@ const userSchema = new mongoose.Schema<IUser>({
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
+    return;
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error as Error);
+  }
 });
 
 // Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword: string) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  try {
+    return await bcrypt.compare(enteredPassword, this.password);
+  } catch (error) {
+    console.error('Password comparison error:', error);
+    return false;
+  }
 };
 
-// Create the model if it doesn't exist, or use existing one
+// Use either existing model or create a new one (prevents model overwrite error)
 const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
 export default User;
-module.exports = User;
