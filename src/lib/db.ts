@@ -15,4 +15,7 @@ const connectDB = async () => {
   }
 };
 
+// Export as both default and named export for compatibility
 export default connectDB;
+module.exports = connectDB;
+

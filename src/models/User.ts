@@ -7,6 +7,7 @@ export interface IUser {
   email: string;
   password: string;
   createdAt: Date;
+  matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -51,7 +52,8 @@ userSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Check if mongoose.models.User exists before creating a new model
+// Create the model if it doesn't exist, or use existing one
 const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
 export default User;
+module.exports = User;

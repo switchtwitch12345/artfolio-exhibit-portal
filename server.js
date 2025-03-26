@@ -2,16 +2,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const connectDB = require('./src/lib/db').default;
+const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const path = require('path');
 
 // Load environment variables
 dotenv.config();
-
-// Connect to database
-connectDB();
 
 // Create Express app
 const app = express();
@@ -20,10 +16,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Let's import our User model
+// Connect to MongoDB
+const connectDB = require('./src/lib/db');
+connectDB().then(() => {
+  console.log('MongoDB connection established');
+}).catch(err => {
+  console.error('MongoDB connection failed:', err.message);
+  process.exit(1);
+});
+
+// Import User model
+const mongoose = require('mongoose');
 let User;
 try {
-  User = require('./src/models/User').default;
+  User = require('./src/models/User').default || mongoose.model('User');
 } catch (error) {
   console.error('Error importing User model:', error);
   process.exit(1);
