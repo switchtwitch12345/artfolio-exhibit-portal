@@ -7,7 +7,10 @@ const connectDB = async () => {
       throw new Error('MONGODB_URI is not defined in environment variables');
     }
     
-    await mongoose.connect(process.env.MONGODB_URI);
+    // Clean the MongoDB URI by removing angle brackets if present
+    const mongoUri = process.env.MONGODB_URI.replace(/<|>/g, '');
+    
+    await mongoose.connect(mongoUri);
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -17,5 +20,4 @@ const connectDB = async () => {
 
 // Export as both default and named export for compatibility
 export default connectDB;
-module.exports = connectDB;
-
+export { connectDB };

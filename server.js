@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-const connectDB = require('./src/lib/db');
+const { connectDB } = require('./src/lib/db');
 connectDB().then(() => {
   console.log('MongoDB connection established');
 }).catch(err => {
@@ -37,7 +37,7 @@ try {
 
 // Generate JWT
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'mysecretkey', {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };
