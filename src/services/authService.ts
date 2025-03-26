@@ -1,8 +1,15 @@
 
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 // Define the service URL
 const API_URL = '/api/auth';
+
+// Function to generate a secure JWT key
+export const generateJwtKey = (): string => {
+  // Generate a random UUID and convert to base64
+  return Buffer.from(uuidv4() + uuidv4(), 'utf8').toString('base64');
+};
 
 // Register user
 export const register = async (userData: { name: string; email: string; password: string }) => {
