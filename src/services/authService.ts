@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Define the service URL
 const API_URL = '/api/auth';
 
-// Function to generate a secure JWT key
+// Function to generate a secure JWT key (optional - you can simply type your own)
 export const generateJwtKey = (): string => {
   // Generate a random UUID and convert to base64
   return Buffer.from(uuidv4() + uuidv4(), 'utf8').toString('base64');
