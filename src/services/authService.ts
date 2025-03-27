@@ -35,17 +35,37 @@ export const register = async (userData: { name: string; email: string; password
 export const login = async (userData: { email: string; password: string }) => {
   try {
     console.log('Sending login request:', { email: userData.email });
-    const response = await axios.post(`${API_URL}/login`, userData);
     
-    if (response.data.token) {
+    // Add delay to ensure request is properly sent
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const response = await axios.post(`${API_URL}/login`, userData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 10000, // 10 second timeout
+    });
+    
+    if (response.data && response.data.token) {
       localStorage.setItem('user', JSON.stringify(response.data));
+      return response.data;
+    } else {
+      console.error('Login response missing token:', response.data);
+      throw new Error('Invalid response from server');
     }
-    
-    return response.data;
   } catch (error) {
     console.error('Login error:', error);
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Invalid credentials');
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Response error data:', error.response.data);
+        throw new Error(error.response.data.message || 'Invalid credentials');
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+        throw new Error('No response from server. Please try again later.');
+      }
     }
     throw new Error('Network error occurred during login');
   }

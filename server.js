@@ -28,15 +28,38 @@ connectDB().then(() => {
 // Import User model
 const mongoose = require('mongoose');
 let User;
+
+// Handle User model import properly
 try {
-  User = require('./src/models/User').default || mongoose.model('User');
+  User = require('./dist/models/User').default;
+  console.log('User model imported successfully');
 } catch (error) {
-  console.error('Error importing User model:', error);
-  process.exit(1);
+  console.error('Error importing User model from dist:', error);
+  
+  try {
+    // Try alternate import path
+    User = require('./src/models/User').default;
+    console.log('User model imported from src successfully');
+  } catch (innerError) {
+    console.error('Error importing User model from src:', innerError);
+    
+    // Last resort - try to get it from mongoose models
+    if (mongoose.models.User) {
+      User = mongoose.models.User;
+      console.log('Retrieved User model from mongoose.models');
+    } else {
+      console.error('Failed to import User model');
+      process.exit(1);
+    }
+  }
 }
 
 // Generate JWT
 const generateToken = (id) => {
+  if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET is not defined in environment variables');
+    return null;
+  }
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
@@ -93,23 +116,40 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     // Find user by email
+    console.log('Looking for user with email:', email);
     const user = await User.findOne({ email }).select('+password');
+    
     if (!user) {
+      console.log('User not found for email:', email);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
+    console.log('User found, comparing password');
+    
     // Check if password matches
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+    try {
+      const isMatch = await user.matchPassword(password);
+      console.log('Password match result:', isMatch);
+      
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+      
+      const token = generateToken(user._id);
+      if (!token) {
+        return res.status(500).json({ message: 'Error generating authentication token' });
+      }
+      
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: token,
+      });
+    } catch (pwError) {
+      console.error('Password comparison error:', pwError);
+      return res.status(500).json({ message: 'Error during password verification' });
     }
-
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: `Server error during login: ${error.message}` });

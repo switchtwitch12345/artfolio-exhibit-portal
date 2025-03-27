@@ -59,11 +59,13 @@ userSchema.methods.matchPassword = async function (enteredPassword: string) {
     return await bcrypt.compare(enteredPassword, this.password);
   } catch (error) {
     console.error('Password comparison error:', error);
-    return false;
+    throw error; // Rethrow to help with debugging
   }
 };
 
-// Use either existing model or create a new one (prevents model overwrite error)
+// Export as both a default export and as a named export to ensure compatibility
 const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
 export default User;
+// Make the module available in CommonJS format too
+module.exports = User;
