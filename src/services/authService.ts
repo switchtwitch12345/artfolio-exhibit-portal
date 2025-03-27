@@ -1,15 +1,8 @@
 
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 
 // Define the service URL
 const API_URL = '/api/auth';
-
-// Function to generate a secure JWT key (optional - you can simply type your own)
-export const generateJwtKey = (): string => {
-  // Generate a random UUID and convert to base64
-  return Buffer.from(uuidv4() + uuidv4(), 'utf8').toString('base64');
-};
 
 // Register user
 export const register = async (userData: { name: string; email: string; password: string }) => {
@@ -36,14 +29,10 @@ export const login = async (userData: { email: string; password: string }) => {
   try {
     console.log('Sending login request:', { email: userData.email });
     
-    // Add delay to ensure request is properly sent
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
     const response = await axios.post(`${API_URL}/login`, userData, {
       headers: {
         'Content-Type': 'application/json',
       },
-      timeout: 10000, // 10 second timeout
     });
     
     if (response.data && response.data.token) {

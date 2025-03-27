@@ -1,8 +1,8 @@
 
-import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -10,62 +10,58 @@ export interface IUser {
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
-const userSchema = new mongoose.Schema<IUser>({
-  name: {
-    type: String,
-    required: [true, 'Please add a name'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, 'Please add an email'],
-    unique: true,
-    match: [
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email',
-    ],
-  },
-  password: {
-    type: String,
-    required: [true, 'Please add a password'],
-    minlength: 6,
-    select: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-// Encrypt password using bcrypt
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
-    return;
+// In-memory user database
+const users: IUser[] = [
+  {
+    _id: '1',
+    name: 'Admin User',
+    email: 'admin@example.com',
+    // Default password: password123
+    password: '$2a$10$eCyRoEL0BlAKIib.qSYIO.9tlb7Tu1VbcLV8V85MOfQyUCdGV0Pn2',
+    createdAt: new Date(),
+    matchPassword: async function(enteredPassword: string) {
+      try {
+        return await bcrypt.compare(enteredPassword, this.password);
+      } catch (error) {
+        console.error('Password comparison error:', error);
+        throw error;
+      }
+    }
   }
+];
 
-  try {
+// User model methods
+export default {
+  // Find user by email
+  findOne: async function(query: { email: string }) {
+    return users.find(user => user.email === query.email);
+  },
+  
+  // Create a new user
+  create: async function(userData: { name: string; email: string; password: string }) {
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error as Error);
-  }
-});
-
-// Match user entered password to hashed password in database
-userSchema.methods.matchPassword = async function (enteredPassword: string) {
-  try {
-    return await bcrypt.compare(enteredPassword, this.password);
-  } catch (error) {
-    console.error('Password comparison error:', error);
-    throw error; // Rethrow to help with debugging
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
+    
+    const newUser = {
+      _id: (users.length + 1).toString(),
+      name: userData.name,
+      email: userData.email,
+      password: hashedPassword,
+      createdAt: new Date(),
+      matchPassword: async function(enteredPassword: string) {
+        try {
+          return await bcrypt.compare(enteredPassword, this.password);
+        } catch (error) {
+          console.error('Password comparison error:', error);
+          throw error;
+        }
+      }
+    };
+    
+    users.push(newUser);
+    return newUser;
   }
 };
 
-// Export as both a default export and as a named export to ensure compatibility
-const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
-
-export default User;
 // Make the module available in CommonJS format too
-module.exports = User;
+module.exports = exports.default;
