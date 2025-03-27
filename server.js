@@ -1,3 +1,4 @@
+
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -13,10 +14,17 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:5173', '*'],
+  origin: '*', // Allow all origins for testing
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 app.use(express.json());
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 
 // Import User model
 const User = require('./src/models/User').default || require('./src/models/User');
@@ -150,6 +158,16 @@ app.get('/api/debug/users', (req, res) => {
   }
 });
 
+// Special debug endpoint to check the server configuration
+app.get('/api/debug/config', (req, res) => {
+  res.json({
+    nodeEnv: process.env.NODE_ENV,
+    port: process.env.PORT || 5000,
+    corsEnabled: true,
+    defaultUserEnabled: true
+  });
+});
+
 // Handle all routes
 app.use('/api/*', (req, res) => {
   console.log('API route not found:', req.originalUrl);
@@ -170,4 +188,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Default user created: admin@example.com / password123`);
+  console.log(`Server API endpoints available at http://localhost:${PORT}/api/...`);
 });

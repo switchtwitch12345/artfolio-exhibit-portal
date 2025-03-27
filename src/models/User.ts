@@ -21,6 +21,7 @@ const users: IUser[] = [
     createdAt: new Date(),
     matchPassword: async function(enteredPassword: string) {
       try {
+        console.log('Comparing password for admin user');
         return await bcrypt.compare(enteredPassword, this.password);
       } catch (error) {
         console.error('Password comparison error:', error);

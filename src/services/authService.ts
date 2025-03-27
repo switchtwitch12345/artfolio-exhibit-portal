@@ -1,8 +1,22 @@
 
 import axios from 'axios';
 
-// Define the service URL with the full base URL
-const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api/auth' : '/api/auth';
+// Define API base URL with fallbacks
+const getBaseUrl = () => {
+  // In development: try different ports
+  if (import.meta.env.DEV) {
+    // Try multiple ports since we're not sure which one is being used
+    return window.location.hostname === 'localhost' ? 
+      `${window.location.protocol}//${window.location.hostname}:5000/api/auth` : 
+      '/api/auth';
+  }
+  // In production: use relative path
+  return '/api/auth';
+};
+
+// Use the determined API URL
+const API_URL = getBaseUrl();
+console.log('Authentication API URL configured as:', API_URL);
 
 // Register user
 export const register = async (userData: { name: string; email: string; password: string }) => {
@@ -30,10 +44,12 @@ export const login = async (userData: { email: string; password: string }) => {
     console.log('Sending login request with credentials:', { email: userData.email });
     console.log('API URL being used:', API_URL);
     
+    // Add timeout to prevent hanging requests
     const response = await axios.post(`${API_URL}/login`, userData, {
       headers: {
         'Content-Type': 'application/json',
       },
+      timeout: 10000, // 10 second timeout
     });
     
     console.log('Login response received:', response.data);
@@ -57,7 +73,9 @@ export const login = async (userData: { email: string; password: string }) => {
       } else if (error.request) {
         // The request was made but no response was received
         console.error('No response received:', error.request);
-        throw new Error('No response from server. Please try again later.');
+        throw new Error('No response from server. Please check if the server is running.');
+      } else if (error.code === 'ECONNABORTED') {
+        throw new Error('Request timed out. Server might be down or unreachable.');
       }
     }
     throw new Error('Network error occurred during login');

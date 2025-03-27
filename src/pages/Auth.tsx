@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -5,6 +6,7 @@ import { Eye, EyeOff, ArrowRight, Check, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 import { login, register } from "@/services/authService";
 import { useAuth } from "@/context/AuthContext";
+import AuthDebug from "@/components/AuthDebug";
 import "../styles/auth.css";
 
 const FloatingBubbles = () => {
@@ -49,6 +51,14 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   
+  useEffect(() => {
+    // Pre-fill with test account in development
+    if (import.meta.env.DEV) {
+      setEmail("admin@example.com");
+      setPassword("password123");
+    }
+  }, []);
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -80,6 +90,7 @@ const Auth = () => {
         errorMessage = error.message;
       }
       toast.error(errorMessage);
+      console.error("Auth error:", error);
     } finally {
       setLoading(false);
     }
@@ -272,6 +283,9 @@ const Auth = () => {
               </p>
             </motion.div>
           )}
+          
+          {/* Add debug component */}
+          <AuthDebug />
         </motion.div>
       </div>
     </div>
