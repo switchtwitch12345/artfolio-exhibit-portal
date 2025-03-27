@@ -27,13 +27,15 @@ export const register = async (userData: { name: string; email: string; password
 // Login user
 export const login = async (userData: { email: string; password: string }) => {
   try {
-    console.log('Sending login request:', { email: userData.email });
+    console.log('Sending login request with credentials:', { email: userData.email });
     
     const response = await axios.post(`${API_URL}/login`, userData, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    
+    console.log('Login response received:', response.data);
     
     if (response.data && response.data.token) {
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -43,12 +45,13 @@ export const login = async (userData: { email: string; password: string }) => {
       throw new Error('Invalid response from server');
     }
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error details:', error);
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         console.error('Response error data:', error.response.data);
+        console.error('Response status:', error.response.status);
         throw new Error(error.response.data.message || 'Invalid credentials');
       } else if (error.request) {
         // The request was made but no response was received

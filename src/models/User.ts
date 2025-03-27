@@ -30,11 +30,18 @@ const users: IUser[] = [
   }
 ];
 
+// Add debugging exports
+export { users };
+
 // User model methods
 export default {
   // Find user by email
   findOne: async function(query: { email: string }) {
-    return users.find(user => user.email === query.email);
+    console.log('Finding user with email:', query.email);
+    console.log('Available users:', users.map(u => u.email));
+    const foundUser = users.find(user => user.email === query.email);
+    console.log('User found:', foundUser ? 'Yes' : 'No');
+    return foundUser;
   },
   
   // Create a new user
@@ -60,7 +67,10 @@ export default {
     
     users.push(newUser);
     return newUser;
-  }
+  },
+  
+  // Add users array for debugging
+  users
 };
 
 // Make the module available in CommonJS format too

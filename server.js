@@ -72,9 +72,10 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    console.log('Login attempt:', { email });
+    console.log('Login attempt with:', { email, password: '***' });
 
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({ message: 'Please provide email and password' });
     }
 
@@ -87,22 +88,26 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    console.log('User found, comparing password');
+    console.log('User found:', { id: user._id, email: user.email });
     
     // Check if password matches
     try {
+      console.log('Attempting to match password');
       const isMatch = await user.matchPassword(password);
       console.log('Password match result:', isMatch);
       
       if (!isMatch) {
+        console.log('Password did not match');
         return res.status(401).json({ message: 'Invalid email or password' });
       }
       
       const token = generateToken(user._id);
       if (!token) {
+        console.log('Failed to generate token');
         return res.status(500).json({ message: 'Error generating authentication token' });
       }
       
+      console.log('Login successful, returning user data and token');
       res.json({
         _id: user._id,
         name: user.name,
@@ -122,6 +127,25 @@ app.post('/api/auth/login', async (req, res) => {
 // Debug endpoint to check server status
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running' });
+});
+
+// Special debug endpoint to check user database
+app.get('/api/debug/users', (req, res) => {
+  try {
+    const safeUsers = User.users ? User.users.map(u => ({
+      _id: u._id,
+      name: u.name,
+      email: u.email,
+      createdAt: u.createdAt
+    })) : [];
+    
+    res.json({ 
+      users: safeUsers,
+      message: 'This endpoint is for debugging only'
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
 });
 
 // Serve static assets in production
