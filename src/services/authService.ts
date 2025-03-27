@@ -1,8 +1,8 @@
 
 import axios from 'axios';
 
-// Define the service URL
-const API_URL = '/api/auth';
+// Define the service URL with the full base URL
+const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api/auth' : '/api/auth';
 
 // Register user
 export const register = async (userData: { name: string; email: string; password: string }) => {
@@ -28,6 +28,7 @@ export const register = async (userData: { name: string; email: string; password
 export const login = async (userData: { email: string; password: string }) => {
   try {
     console.log('Sending login request with credentials:', { email: userData.email });
+    console.log('API URL being used:', API_URL);
     
     const response = await axios.post(`${API_URL}/login`, userData, {
       headers: {

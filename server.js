@@ -1,4 +1,3 @@
-
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -13,7 +12,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8080', 'http://localhost:5173', '*'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Import User model
@@ -146,6 +148,12 @@ app.get('/api/debug/users', (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
+});
+
+// Handle all routes
+app.use('/api/*', (req, res) => {
+  console.log('API route not found:', req.originalUrl);
+  res.status(404).json({ message: 'API endpoint not found' });
 });
 
 // Serve static assets in production
