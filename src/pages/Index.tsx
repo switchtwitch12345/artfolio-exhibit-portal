@@ -6,6 +6,7 @@ import { artworks } from "@/utils/mockData";
 import FeaturedArt from "@/components/FeaturedArt";
 import ArtCard from "@/components/ArtCard";
 import AnimatedLayout from "@/components/AnimatedLayout";
+import AuthDebug from "@/components/AuthDebug";
 import { ArrowRight } from "lucide-react";
 
 const Index = () => {
@@ -51,6 +52,9 @@ const Index = () => {
               <ArtCard key={artwork.id} artwork={artwork} index={index} />
             ))}
           </div>
+          
+          {/* Add the debug component */}
+          <AuthDebug />
         </div>
       </section>
 
