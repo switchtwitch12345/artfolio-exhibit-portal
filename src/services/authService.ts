@@ -1,82 +1,68 @@
 
-import axios from 'axios';
+// Simple client-side authentication service without server dependency
 
-// Define API base URL with fallbacks
-const getBaseUrl = () => {
-  // In development: try different ports
-  if (import.meta.env.DEV) {
-    return 'http://localhost:5000/api/auth';
+// Define our hardcoded users
+const hardcodedUsers = [
+  {
+    _id: '1',
+    name: 'User One',
+    email: 'user1',
+    password: 'user1',
+  },
+  {
+    _id: '2',
+    name: 'Admin One',
+    email: 'admin1',
+    password: 'admin1',
+  },
+  {
+    _id: '3',
+    name: 'User Two',
+    email: 'user2',
+    password: 'user2',
   }
-  // In production: use relative path
-  return '/api/auth';
+];
+
+// Register user - disabled in this version
+export const register = async () => {
+  throw new Error('Registration is disabled. Please use one of the provided accounts.');
 };
 
-// Use the determined API URL
-const API_URL = getBaseUrl();
-console.log('Authentication API URL configured as:', API_URL);
-
-// Register user
-export const register = async (userData: { name: string; email: string; password: string }) => {
-  try {
-    console.log('Sending registration request:', { email: userData.email, name: userData.name });
-    const response = await axios.post(`${API_URL}/register`, userData);
-    
-    if (response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data));
-    }
-    
-    return response.data;
-  } catch (error) {
-    console.error('Registration error:', error);
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'An error occurred during registration');
-    }
-    throw new Error('Network error occurred during registration');
-  }
-};
-
-// Login user
+// Login user - check against hardcoded users
 export const login = async (userData: { email: string; password: string }) => {
-  try {
-    console.log('Sending login request with credentials:', { email: userData.email });
-    console.log('API URL being used:', API_URL);
-    
-    // Add timeout to prevent hanging requests
-    const response = await axios.post(`${API_URL}/login`, userData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      timeout: 10000, // 10 second timeout
-    });
-    
-    console.log('Login response received:', response.data);
-    
-    if (response.data && response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data));
-      return response.data;
-    } else {
-      console.error('Login response missing token:', response.data);
-      throw new Error('Invalid response from server');
-    }
-  } catch (error) {
-    console.error('Login error details:', error);
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Response error data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        throw new Error(error.response.data.message || 'Invalid credentials');
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('No response received:', error.request);
-        throw new Error('No response from server. Please check if the server is running by opening a terminal and running "node server.js"');
-      } else if (error.code === 'ECONNABORTED') {
-        throw new Error('Request timed out. Server might be down or unreachable.');
-      }
-    }
-    throw new Error('Network error occurred during login');
+  console.log('Login attempt with:', { email: userData.email });
+  
+  // Simple validation
+  if (!userData.email || !userData.password) {
+    throw new Error('Please provide username and password');
   }
+  
+  // Find user by email
+  const user = hardcodedUsers.find(u => u.email === userData.email);
+  
+  if (!user) {
+    console.error('User not found for username:', userData.email);
+    throw new Error('Invalid username or password');
+  }
+  
+  // Check if password matches
+  if (user.password !== userData.password) {
+    console.error('Password did not match');
+    throw new Error('Invalid username or password');
+  }
+  
+  // Create response with token (just for API consistency)
+  const response = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    token: `fake-token-${user._id}-${Date.now()}`, // Simple fake token
+  };
+  
+  // Store in localStorage for session persistence
+  localStorage.setItem('user', JSON.stringify(response));
+  
+  return response;
 };
 
 // Logout user
