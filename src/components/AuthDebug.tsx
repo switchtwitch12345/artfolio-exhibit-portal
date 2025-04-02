@@ -15,9 +15,7 @@ const AuthDebug = () => {
   useEffect(() => {
     const getBaseUrl = () => {
       if (import.meta.env.DEV) {
-        return window.location.hostname === 'localhost' ? 
-          `${window.location.protocol}//${window.location.hostname}:5000` : 
-          '';
+        return 'http://localhost:5000';
       }
       return '';
     };
@@ -27,24 +25,25 @@ const AuthDebug = () => {
 
   const checkServerStatus = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/health`);
+      setServerStatus('Checking server status...');
+      const response = await axios.get(`${apiUrl}/api/health`, { timeout: 3000 });
       setServerStatus(`Server OK: ${response.data.status}`);
       toast.success('Server connection successful!');
     } catch (error) {
       console.error('Server health check error:', error);
-      setServerStatus('Server Error: Unable to connect');
-      toast.error('Failed to connect to server API');
+      setServerStatus('Server Error: Unable to connect. Make sure to start the server with "node server.js"');
+      toast.error('Failed to connect to server API. Please run "node server.js" in a terminal.');
     }
   };
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/debug/users`);
+      const response = await axios.get(`${apiUrl}/api/debug/users`, { timeout: 3000 });
       setUsers(response.data.users || []);
       toast.success('Users fetched successfully!');
     } catch (error) {
       console.error('Error fetching users:', error);
-      toast.error('Failed to fetch users');
+      toast.error('Failed to fetch users. Is the server running? Try "node server.js"');
     }
   };
 
@@ -57,11 +56,10 @@ const AuthDebug = () => {
       const response = await axios.post(`${apiUrl}/api/auth/login`, {
         email: testUser,
         password: testUser
-      });
+      }, { timeout: 3000 });
       
       setTestResponse(JSON.stringify(response.data, null, 2));
       toast.success('Login test successful!');
-      localStorage.setItem('testUser', JSON.stringify(response.data));
     } catch (error: any) {
       console.error('Login test error:', error);
       const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
@@ -76,7 +74,6 @@ const AuthDebug = () => {
     setShowDebug(!showDebug);
     if (!showDebug) {
       checkServerStatus();
-      fetchUsers();
     }
   };
 
@@ -95,6 +92,7 @@ const AuthDebug = () => {
           <h4 className="font-semibold mb-2">Debug Information</h4>
           <p>API URL: {apiUrl || 'Not configured'}</p>
           <p>Server Status: {serverStatus}</p>
+          <p className="text-red-600 font-bold">IMPORTANT: Make sure to start the server by running "node server.js" in a terminal!</p>
           <p>Available Accounts: user1, admin1, user2 (passwords same as usernames)</p>
           
           <div className="mt-2">

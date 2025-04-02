@@ -128,6 +128,11 @@ app.use('/api/*', (req, res) => {
   res.status(404).json({ message: 'API endpoint not found' });
 });
 
+// Special route for the root path to confirm the server is working
+app.get('/', (req, res) => {
+  res.json({ message: 'Server is running correctly' });
+});
+
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('dist'));
