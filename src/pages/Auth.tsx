@@ -54,8 +54,8 @@ const Auth = () => {
   useEffect(() => {
     // Pre-fill with test account in development
     if (import.meta.env.DEV) {
-      setEmail("admin@example.com");
-      setPassword("password123");
+      setEmail("user1");
+      setPassword("user1");
     }
   }, []);
   
@@ -76,8 +76,10 @@ const Auth = () => {
         userData = await login({ email, password });
         toast.success("Successfully logged in");
       } else {
-        userData = await register({ name, email, password });
-        toast.success("Account created successfully");
+        // Registration is disabled
+        toast.error("Registration is currently disabled. Please use one of the existing accounts.");
+        setLoading(false);
+        return;
       }
       
       setUser(userData);
@@ -169,17 +171,17 @@ const Auth = () => {
               className="form-group"
             >
               <label htmlFor="email" className="form-label">
-                Email Address
+                {isLogin ? "Username" : "Email Address"}
               </label>
               <div className="password-input-wrapper">
                 <Mail size={16} className="input-icon" />
                 <input
                   id="email"
-                  type="email"
+                  type={isLogin ? "text" : "email"}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="form-input"
-                  placeholder="Enter your email"
+                  placeholder={isLogin ? "Enter your username" : "Enter your email"}
                   required
                 />
               </div>
@@ -236,7 +238,7 @@ const Auth = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: isLogin ? 0.7 : 0.8, duration: 0.6 }}
               type="submit"
-              disabled={loading}
+              disabled={loading || !isLogin}
               className="submit-btn"
             >
               {loading ? (
@@ -248,6 +250,17 @@ const Auth = () => {
                 </>
               )}
             </motion.button>
+            
+            {!isLogin && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="text-xs text-center mt-2 text-red-500"
+              >
+                Registration is disabled. Please use available accounts.
+              </motion.p>
+            )}
           </form>
           
           <motion.div 
@@ -284,7 +297,6 @@ const Auth = () => {
             </motion.div>
           )}
           
-          {/* Add debug component */}
           <AuthDebug />
         </motion.div>
       </div>

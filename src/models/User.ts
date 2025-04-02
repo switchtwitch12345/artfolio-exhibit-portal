@@ -10,67 +10,57 @@ export interface IUser {
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
-// In-memory user database
+// Fixed user list - no database needed
 const users: IUser[] = [
   {
     _id: '1',
-    name: 'Admin User',
-    email: 'admin@example.com',
-    // Default password: password123
-    password: '$2a$10$eCyRoEL0BlAKIib.qSYIO.9tlb7Tu1VbcLV8V85MOfQyUCdGV0Pn2',
+    name: 'User One',
+    email: 'user1',
+    password: 'user1',
     createdAt: new Date(),
     matchPassword: async function(enteredPassword: string) {
-      try {
-        console.log('Comparing password for admin user');
-        return await bcrypt.compare(enteredPassword, this.password);
-      } catch (error) {
-        console.error('Password comparison error:', error);
-        throw error;
-      }
+      return enteredPassword === this.password;
+    }
+  },
+  {
+    _id: '2',
+    name: 'Admin One',
+    email: 'admin1',
+    password: 'admin1',
+    createdAt: new Date(),
+    matchPassword: async function(enteredPassword: string) {
+      return enteredPassword === this.password;
+    }
+  },
+  {
+    _id: '3',
+    name: 'User Two',
+    email: 'user2',
+    password: 'user2',
+    createdAt: new Date(),
+    matchPassword: async function(enteredPassword: string) {
+      return enteredPassword === this.password;
     }
   }
 ];
-
-// Add debugging exports
-export { users };
 
 // User model methods
 export default {
   // Find user by email
   findOne: async function(query: { email: string }) {
-    console.log('Finding user with email:', query.email);
-    console.log('Available users:', users.map(u => u.email));
+    console.log('Finding user with username:', query.email);
     const foundUser = users.find(user => user.email === query.email);
     console.log('User found:', foundUser ? 'Yes' : 'No');
     return foundUser;
   },
   
-  // Create a new user
+  // We won't need this anymore since we have fixed users
   create: async function(userData: { name: string; email: string; password: string }) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
-    
-    const newUser = {
-      _id: (users.length + 1).toString(),
-      name: userData.name,
-      email: userData.email,
-      password: hashedPassword,
-      createdAt: new Date(),
-      matchPassword: async function(enteredPassword: string) {
-        try {
-          return await bcrypt.compare(enteredPassword, this.password);
-        } catch (error) {
-          console.error('Password comparison error:', error);
-          throw error;
-        }
-      }
-    };
-    
-    users.push(newUser);
-    return newUser;
+    console.log('Create user operation attempted but disabled');
+    return null;
   },
   
-  // Add users array for debugging
+  // Export users array for debugging
   users
 };
 
