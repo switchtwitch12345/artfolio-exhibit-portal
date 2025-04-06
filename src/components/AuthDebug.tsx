@@ -5,7 +5,6 @@ import { login } from '@/services/authService';
 
 const AuthDebug = () => {
   const [showDebug, setShowDebug] = useState<boolean>(false);
-  const [isTestingLogin, setIsTestingLogin] = useState<boolean>(false);
   const [testUser, setTestUser] = useState<string>('user1');
   const [testResponse, setTestResponse] = useState<string>('');
 
@@ -15,13 +14,12 @@ const AuthDebug = () => {
     { _id: '3', name: 'User Two', email: 'user2' }
   ];
 
-  const testLogin = async () => {
-    setIsTestingLogin(true);
+  const testLogin = () => {
     setTestResponse('Testing login...');
     
     try {
-      // Try to login with the selected user
-      const response = await login({
+      // Try to login with the selected user - synchronous operation
+      const response = login({
         email: testUser,
         password: testUser
       });
@@ -33,8 +31,6 @@ const AuthDebug = () => {
       const errorMessage = error.message || 'Unknown error';
       setTestResponse(`Error: ${errorMessage}`);
       toast.error(`Login test failed: ${errorMessage}`);
-    } finally {
-      setIsTestingLogin(false);
     }
   };
 
@@ -72,8 +68,7 @@ const AuthDebug = () => {
               </select>
               <button 
                 onClick={testLogin}
-                disabled={isTestingLogin}
-                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
               >
                 Test Login
               </button>

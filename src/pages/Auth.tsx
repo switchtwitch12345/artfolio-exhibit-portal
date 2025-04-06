@@ -59,7 +59,7 @@ const Auth = () => {
     }
   }, []);
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !password || (!isLogin && !name)) {
@@ -73,7 +73,8 @@ const Auth = () => {
       let userData;
       
       if (isLogin) {
-        userData = await login({ email, password });
+        // Use synchronous version - no async/await to avoid any network operations
+        userData = login({ email, password });
         toast.success("Successfully logged in");
       } else {
         // Registration is disabled

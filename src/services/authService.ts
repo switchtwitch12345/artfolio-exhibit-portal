@@ -1,5 +1,5 @@
 
-// Simple client-side authentication service without server dependency
+// Simple client-side authentication service without server or network requests
 
 // Define our hardcoded users
 const hardcodedUsers = [
@@ -29,7 +29,7 @@ export const register = async () => {
 };
 
 // Login user - check against hardcoded users
-export const login = async (userData: { email: string; password: string }) => {
+export const login = (userData: { email: string; password: string }) => {
   console.log('Login attempt with:', { email: userData.email });
   
   // Simple validation
