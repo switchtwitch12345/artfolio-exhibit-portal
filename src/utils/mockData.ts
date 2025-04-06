@@ -74,7 +74,7 @@ export const artworks: Artwork[] = [
     id: "5",
     title: "Form and Void",
     description: "A sculptural exploration of negative space and its importance in defining form. Created using sustainable materials and traditional techniques.",
-    imageUrl: "https://images.unsplash.com/photo-1576773122198-6798a585ab2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1635&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1569780655478-7bfaac4d95a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1635&q=80",
     student: students[4],
     medium: "Reclaimed Wood and Steel",
     dimensions: "36\" × 24\" × 24\"",
