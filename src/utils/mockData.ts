@@ -17,12 +17,12 @@ export interface Artwork {
 }
 
 export const students = [
-  { id: "1", name: "Emma Thompson", year: "Senior", major: "Fine Arts" },
-  { id: "2", name: "Miguel Rodriguez", year: "Junior", major: "Digital Media" },
-  { id: "3", name: "Aisha Johnson", year: "Sophomore", major: "Illustration" },
-  { id: "4", name: "David Chen", year: "Senior", major: "Photography" },
-  { id: "5", name: "Sophia Patel", year: "Freshman", major: "Sculpture" },
-  { id: "6", name: "Jackson Lee", year: "Junior", major: "Mixed Media" },
+  { id: "1", name: "Mitul", year: "Senior", major: "Fine Arts" },
+  { id: "2", name: "Nishant", year: "Junior", major: "Digital Media" },
+  { id: "3", name: "Omkar", year: "Sophomore", major: "Illustration" },
+  { id: "4", name: "Shivani", year: "Senior", major: "Photography" },
+  { id: "5", name: "Srushti", year: "Freshman", major: "Sculpture" },
+  { id: "6", name: "Vidhan", year: "Junior", major: "Mixed Media" },
 ];
 
 export const artworks: Artwork[] = [
@@ -76,7 +76,7 @@ export const artworks: Artwork[] = [
     description: "A sculptural exploration of negative space and its importance in defining form. Created using sustainable materials and traditional techniques.",
     imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
     student: students[4],
-    medium: "Reclaimed Wood and Steel",
+    medium: "Futuristic And Utopian Artwork",
     dimensions: "36\" × 24\" × 24\"",
     year: 2023,
     tags: ["sculpture", "3D", "sustainable"]
