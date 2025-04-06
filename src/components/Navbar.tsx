@@ -55,7 +55,7 @@ const Navbar = () => {
           ))}
           <div className="navbar-separator" />
           {isAuthenticated ? (
-            <button onClick={handleLogout} className="navbar-sign-in">
+            <button onClick={handleLogout} className="navbar-log-out">
               Log Out
             </button>
           ) : (
@@ -92,7 +92,7 @@ const Navbar = () => {
             </Link>
           ))}
           {isAuthenticated ? (
-            <button onClick={handleLogout} className="navbar-mobile-sign-in">
+            <button onClick={handleLogout} className="navbar-mobile-log-out">
               Log Out
             </button>
           ) : (
