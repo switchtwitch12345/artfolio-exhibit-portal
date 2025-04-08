@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useWeb3 } from '@/context/Web3Context';
 import { Button } from '@/components/ui/button';
 import { 
   Wallet, 
-  WalletOff, 
+  LogOut, 
   AlertTriangle,
   ExternalLink,
   ChevronDown
@@ -84,7 +83,7 @@ const WalletConnector = () => {
           onClick={disconnect}
           className="gap-2 text-destructive"
         >
-          <WalletOff size={16} />
+          <LogOut size={16} />
           Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>

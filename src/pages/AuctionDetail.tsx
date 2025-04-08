@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuction } from "@/hooks/useAuction";
@@ -31,7 +30,6 @@ const AuctionDetail = () => {
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [bidSuccess, setBidSuccess] = useState(false);
   
-  // Fetch auction data
   const fetchAuction = async () => {
     if (!id) return;
     
@@ -48,14 +46,12 @@ const AuctionDetail = () => {
     setLoading(false);
   };
   
-  // Handle refreshing the auction after a successful bid
   const handleBidSuccess = () => {
     setBidSuccess(true);
     fetchAuction();
     setTimeout(() => setBidSuccess(false), 3000);
   };
   
-  // Handle ending the auction
   const handleEndAuction = async () => {
     if (!id) return;
     
@@ -65,7 +61,6 @@ const AuctionDetail = () => {
     }
   };
   
-  // Update the time left every second
   useEffect(() => {
     if (!auction) return;
     
@@ -88,12 +83,10 @@ const AuctionDetail = () => {
     return () => clearInterval(interval);
   }, [auction]);
   
-  // Fetch auction data when the component mounts or id changes
   useEffect(() => {
     fetchAuction();
   }, [id]);
   
-  // Format address for display
   const formatAddress = (address: string) => {
     if (!address || address === ethers.constants.AddressZero) return "No bidder yet";
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
@@ -159,7 +152,6 @@ const AuctionDetail = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left column - Image */}
         <div className="artwork-image-container">
           <img
             src={auction.imageUrl}
@@ -168,7 +160,6 @@ const AuctionDetail = () => {
           />
         </div>
         
-        {/* Right column - Auction details */}
         <div>
           <div className="flex items-center gap-2 mb-2">
             <div className="artwork-tag">Auction</div>
@@ -196,7 +187,6 @@ const AuctionDetail = () => {
           
           <p className="artwork-description mb-6">{auction.description}</p>
           
-          {/* Bidding information */}
           <div className="bg-muted rounded-lg p-4 mb-6">
             <div className="flex justify-between items-center mb-4">
               <div>
@@ -223,7 +213,6 @@ const AuctionDetail = () => {
               </div>
             </div>
             
-            {/* Bid success message */}
             {bidSuccess && (
               <div className="mb-4 bg-green-50 text-green-800 p-3 rounded flex items-center gap-2">
                 <CheckCircle2 size={16} />
@@ -231,7 +220,6 @@ const AuctionDetail = () => {
               </div>
             )}
             
-            {/* Bidding actions */}
             {!hasEnded ? (
               <>
                 {!isConnected ? (
@@ -260,7 +248,6 @@ const AuctionDetail = () => {
               </div>
             )}
             
-            {/* End auction button (for seller only) */}
             {isSeller && !auction.ended && (
               <div className="mt-4">
                 <Button 
@@ -275,7 +262,6 @@ const AuctionDetail = () => {
             )}
           </div>
           
-          {/* Auction details */}
           <div className="artwork-metadata-grid">
             <div className="artwork-metadata">
               <div className="artwork-metadata-header">

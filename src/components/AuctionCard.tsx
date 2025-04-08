@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWeb3 } from '@/context/Web3Context';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Clock, Gavel, User } from 'lucide-react';
+import { ethers } from 'ethers';
 
 interface AuctionCardProps {
   id: number;
@@ -37,7 +37,6 @@ const AuctionCard = ({
 }: AuctionCardProps) => {
   const { account } = useWeb3();
   
-  // Format timestamp to relative time
   const formattedTimeLeft = () => {
     if (ended) return "Auction ended";
     if (!active) return "Auction not active";
@@ -48,13 +47,10 @@ const AuctionCard = ({
     return `Ends ${formatDistanceToNow(endTime * 1000, { addSuffix: true })}`;
   };
   
-  // Check if current user is the highest bidder
   const isHighestBidder = account && highestBidder === account;
   
-  // Check if current user is the seller
   const isSeller = account && seller === account;
   
-  // Format bid information
   const formatBidInfo = () => {
     if (parseFloat(highestBid) > 0) {
       return `Current bid: ${highestBid} ETH`;
