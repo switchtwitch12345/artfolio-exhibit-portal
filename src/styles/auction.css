@@ -1,0 +1,189 @@
+
+.auction-card .art-card-image-container {
+  position: relative;
+}
+
+.bid-success {
+  background-color: rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bid-success-icon {
+  color: #4ade80;
+}
+
+.bid-error {
+  background-color: rgba(248, 113, 113, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bid-error-icon {
+  color: #f87171;
+}
+
+.auction-status {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  z-index: 10;
+}
+
+.auction-status.active {
+  background-color: rgba(74, 222, 128, 0.9);
+  color: #065f46;
+}
+
+.auction-status.ended {
+  background-color: rgba(156, 163, 175, 0.9);
+  color: #1f2937;
+}
+
+.auction-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #9ea0bc;
+}
+
+.auction-time-icon {
+  color: #9ea0bc;
+}
+
+.auction-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a26;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auction-price-label {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #9ea0bc;
+}
+
+.auction-bidder {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #555772;
+}
+
+.auction-bidder-icon {
+  color: #9ea0bc;
+}
+
+.auction-action {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auction-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  margin-left: 0.5rem;
+}
+
+.auction-badge.seller {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #1d4ed8;
+}
+
+.auction-badge.bidder {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: #6d28d9;
+}
+
+.wallet-info {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.wallet-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.wallet-info-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1a1a26;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wallet-info-icon {
+  color: #9ea0bc;
+}
+
+.wallet-info-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wallet-address {
+  font-family: monospace;
+  color: #555772;
+}
+
+.wallet-balance {
+  font-weight: 500;
+  color: #1a1a26;
+}
+
+.network-warning {
+  background-color: rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.network-warning-icon {
+  color: #d97706;
+}
+
+@media (min-width: 768px) {
+  .auction-action {
+    flex-direction: row;
+  }
+}
