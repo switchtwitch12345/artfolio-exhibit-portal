@@ -17,19 +17,19 @@ const SellArtworkButton = ({ artworkId }: SellArtworkButtonProps) => {
       <Button 
         variant="outline" 
         onClick={connectWallet} 
-        className="gap-2"
+        className="gap-2 w-full"
       >
         <Wallet size={16} />
-        Connect Wallet to Sell
+        Connect Wallet to Sell as Auction
       </Button>
     );
   }
 
   return (
-    <Link to={`/create-auction/${artworkId}`}>
-      <Button className="gap-2">
+    <Link to={`/create-auction/${artworkId}`} className="w-full">
+      <Button className="gap-2 w-full">
         <Gavel size={16} />
-        Sell as Auction
+        Create Auction for this Artwork
       </Button>
     </Link>
   );
