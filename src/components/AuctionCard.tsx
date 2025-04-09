@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWeb3 } from '@/context/Web3Context';
@@ -5,6 +6,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Clock, Gavel, User } from 'lucide-react';
 import { ethers } from 'ethers';
+import { Button } from '@/components/ui/button';
 
 interface AuctionCardProps {
   id: number;
@@ -73,7 +75,7 @@ const AuctionCard = ({
       }}
       className="art-card auction-card"
     >
-      <Link to={`/auction/${id}`} className="art-card-link">
+      <div className="art-card-link">
         <div className="art-card-image-container">
           <img
             src={imageUrl}
@@ -125,8 +127,16 @@ const AuctionCard = ({
               </p>
             </div>
           )}
+          
+          <div className="mt-4 flex justify-center">
+            <Link to={`/auction/${id}`} className="w-full">
+              <Button className="w-full gap-2">
+                {active && !ended ? "Place Bid" : "View Details"}
+              </Button>
+            </Link>
+          </div>
         </div>
-      </Link>
+      </div>
     </motion.div>
   );
 };
