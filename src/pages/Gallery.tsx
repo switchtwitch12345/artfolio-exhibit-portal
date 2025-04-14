@@ -35,15 +35,15 @@ const Gallery = () => {
               Filter by student name to discover individual artistic journeys.
             </p>
             
-            <div className="mt-4">
+            <div className="mt-6">
               <Link to="/auctions">
-                <Button className="gap-2 bg-green-600 hover:bg-green-700">
-                  <Gavel size={16} />
+                <Button variant="auction" className="gap-2" size="xl">
+                  <Gavel size={18} />
                   Browse NFT Auctions
                 </Button>
               </Link>
               <p className="mt-2 text-sm text-muted-foreground">
-                View and bid on artworks using cryptocurrency
+                View and participate in blind auctions using cryptocurrency
               </p>
             </div>
           </motion.div>

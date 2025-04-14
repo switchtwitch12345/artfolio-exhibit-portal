@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useWeb3 } from '@/context/Web3Context';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Clock, Gavel, User } from 'lucide-react';
+import { Clock, Gavel, User, Eye, EyeOff } from 'lucide-react';
 import { ethers } from 'ethers';
 import { Button } from '@/components/ui/button';
 
@@ -55,7 +55,7 @@ const AuctionCard = ({
   
   const formatBidInfo = () => {
     if (parseFloat(highestBid) > 0) {
-      return `Current bid: ${highestBid} ETH`;
+      return `Secret bidding in progress`;
     } else {
       return `Starting price: ${startingPrice} ETH`;
     }
@@ -73,7 +73,7 @@ const AuctionCard = ({
           delay: index * 0.1
         }
       }}
-      className="art-card auction-card"
+      className="art-card auction-card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
     >
       <div className="art-card-link">
         <div className="art-card-image-container">
@@ -88,14 +88,17 @@ const AuctionCard = ({
               <span className="text-white font-semibold text-lg">Auction Ended</span>
             </div>
           )}
+          {!ended && active && (
+            <div className="auction-status active">Active</div>
+          )}
         </div>
         <div className="art-card-content">
           <div className="art-card-tag-container">
-            <div className="art-card-medium flex items-center gap-1">
+            <div className="art-card-medium flex items-center gap-1 bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
               <Gavel size={12} />
-              <span>Auction</span>
+              <span>NFT Auction</span>
             </div>
-            <div className="art-card-year flex items-center gap-1">
+            <div className="art-card-year flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
               <Clock size={12} />
               <span>{formattedTimeLeft()}</span>
             </div>
@@ -103,15 +106,25 @@ const AuctionCard = ({
           <h3 className="art-card-title">{title}</h3>
           
           <div className="flex flex-col gap-1 mt-2">
-            <p className="text-sm font-medium text-primary">
-              {formatBidInfo()}
+            <p className="text-sm font-medium text-primary flex items-center">
+              {parseFloat(highestBid) > 0 ? (
+                <>
+                  <EyeOff size={16} className="mr-2 text-orange-500" />
+                  <span className="text-orange-500">{formatBidInfo()}</span>
+                </>
+              ) : (
+                <>
+                  <Eye size={16} className="mr-2 text-blue-500" />
+                  <span className="text-blue-500">{formatBidInfo()}</span>
+                </>
+              )}
             </p>
             {highestBidder !== ethers.constants.AddressZero && (
               <p className="flex items-center gap-1 text-xs text-muted-foreground">
                 <User size={12} />
                 <span>
                   {isHighestBidder 
-                    ? "You are the highest bidder" 
+                    ? "You have placed a bid" 
                     : "Has bidders"}
                 </span>
               </p>
@@ -123,15 +136,29 @@ const AuctionCard = ({
               <p className="text-xs font-medium text-muted-foreground">
                 {isSeller ? "You are the seller" : ""}
                 {isSeller && isHighestBidder ? " • " : ""}
-                {isHighestBidder ? "You are the highest bidder" : ""}
+                {isHighestBidder ? "You have placed a bid" : ""}
               </p>
             </div>
           )}
           
           <div className="mt-4 flex justify-center">
             <Link to={`/auction/${id}`} className="w-full">
-              <Button className="w-full gap-2">
-                {active && !ended ? "Place Bid" : "View Details"}
+              <Button 
+                variant={active && !ended ? "bid" : "secondary"} 
+                className="w-full gap-2 transition-all duration-300 transform hover:scale-105"
+                size="lg"
+              >
+                {active && !ended ? (
+                  <>
+                    <EyeOff size={18} />
+                    Place Secret Bid
+                  </>
+                ) : (
+                  <>
+                    <Eye size={18} />
+                    View Details
+                  </>
+                )}
               </Button>
             </Link>
           </div>

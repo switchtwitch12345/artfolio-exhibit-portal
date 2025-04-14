@@ -17,6 +17,7 @@ import { useAuction } from '@/hooks/useAuction';
 import { useWeb3 } from '@/context/Web3Context';
 import { ethers } from 'ethers';
 import { toast } from 'sonner';
+import { EyeOff } from 'lucide-react';
 
 interface BidFormProps {
   auctionId: number;
@@ -45,9 +46,9 @@ const BidForm = ({
     bidAmount: z.string().refine(
       (val) => {
         const num = parseFloat(val);
-        return !isNaN(num) && num > currentBidEth;
+        return !isNaN(num) && num > 0;
       }, 
-      { message: `Bid must be higher than ${currentHighestBid} ETH` }
+      { message: `Bid must be a positive number` }
     ),
   });
 
@@ -69,6 +70,8 @@ const BidForm = ({
       const success = await placeBid(auctionId, values.bidAmount);
       if (success) {
         onSuccess();
+        // Clear the form value for privacy
+        form.reset({ bidAmount: '' });
       }
     } finally {
       setSubmitting(false);
@@ -78,21 +81,32 @@ const BidForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md mb-4 flex items-start">
+          <EyeOff className="text-amber-500 mt-1 mr-2 shrink-0" size={16} />
+          <p className="text-sm text-amber-700">
+            This is a blind auction. Your bid will be kept secret and other bidders won't see your bid amount. The highest bid will only be revealed at the end of the auction.
+          </p>
+        </div>
+        
         <FormField
           control={form.control}
           name="bidAmount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your Bid (ETH)</FormLabel>
+              <FormLabel className="text-base font-medium">Your Secret Bid (ETH)</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     {...field}
                     type="number"
                     step="0.01"
-                    min={parseFloat(currentHighestBid) + 0.01}
-                    placeholder={suggestedBid}
+                    min="0.01"
+                    placeholder="Enter your bid amount"
+                    className="pl-8 h-12 text-lg font-bold"
                   />
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    Ξ
+                  </span>
                 </div>
               </FormControl>
               <FormMessage />
@@ -104,8 +118,10 @@ const BidForm = ({
           type="submit" 
           className="w-full" 
           disabled={loading || submitting}
+          variant="bid"
+          size="xl"
         >
-          {loading || submitting ? "Placing Bid..." : "Place Bid"}
+          {loading || submitting ? "Placing Bid..." : "Place Secret Bid"}
         </Button>
       </form>
     </Form>

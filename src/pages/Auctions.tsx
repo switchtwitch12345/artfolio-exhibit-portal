@@ -6,7 +6,7 @@ import AuctionCard from "@/components/AuctionCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlusCircle, Wallet, AlertTriangle } from "lucide-react";
+import { PlusCircle, Wallet, AlertTriangle, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Auctions = () => {
@@ -59,30 +59,46 @@ const Auctions = () => {
       <div className="container">
         <div className="gallery-header">
           <div className="gallery-tag">Digital Marketplace</div>
-          <h1 className="gallery-title">Artwork Auctions</h1>
+          <h1 className="gallery-title">Blind NFT Auctions</h1>
+          
+          <div className="blind-auction-notice mt-4 mb-6">
+            <EyeOff size={24} className="blind-auction-notice-icon shrink-0" />
+            <div>
+              <h3 className="font-medium text-amber-800">Blind Bidding System</h3>
+              <p className="text-sm text-amber-700">
+                Our auctions use a blind bidding system. Bid amounts are kept secret until the auction ends, 
+                ensuring a fair process for all participants.
+              </p>
+            </div>
+          </div>
+          
           <p className="gallery-description">
             Bid on unique artwork created by our talented students. All transactions are secured on the Ethereum blockchain.
           </p>
           
           {isConnected ? (
-            <Link to="/gallery">
-              <Button className="gap-2">
-                <PlusCircle size={16} />
+            <Link to="/gallery" className="mt-6 inline-block">
+              <Button variant="auction" className="gap-2" size="xl">
+                <PlusCircle size={18} />
                 Browse Gallery to Create an Auction
               </Button>
             </Link>
           ) : (
-            <Button onClick={connectWallet} variant="outline" className="gap-2">
-              <Wallet size={16} />
+            <Button onClick={connectWallet} variant="outline" className="gap-2 mt-6" size="xl">
+              <Wallet size={18} />
               Connect Wallet to Participate
             </Button>
           )}
         </div>
         
         <Tabs defaultValue="active" value={tabValue} onValueChange={setTabValue} className="mb-6">
-          <TabsList>
-            <TabsTrigger value="active">Active Auctions</TabsTrigger>
-            <TabsTrigger value="all">All Auctions</TabsTrigger>
+          <TabsList className="bg-purple-100">
+            <TabsTrigger value="active" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              Active Auctions
+            </TabsTrigger>
+            <TabsTrigger value="all" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              All Auctions
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="active">

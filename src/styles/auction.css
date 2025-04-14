@@ -1,6 +1,14 @@
 
 .auction-card .art-card-image-container {
   position: relative;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auction-card:hover .art-card-image-container {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
 }
 
 .bid-success {
@@ -35,18 +43,35 @@
 
 .auction-status {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 9999px;
   z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .auction-status.active {
   background-color: rgba(74, 222, 128, 0.9);
   color: #065f46;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .auction-status.ended {
@@ -90,6 +115,9 @@
   margin-top: 0.5rem;
   font-size: 0.875rem;
   color: #555772;
+  background-color: #f8f8fc;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .auction-bidder-icon {
@@ -105,11 +133,12 @@
 
 .auction-badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: 9999px;
   margin-left: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .auction-badge.seller {
@@ -123,12 +152,13 @@
 }
 
 .wallet-info {
-  background-color: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--border-radius);
-  padding: 1rem;
+  padding: 1.25rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .wallet-info-header {
@@ -160,11 +190,17 @@
 .wallet-address {
   font-family: monospace;
   color: #555772;
+  background-color: #f8f8fc;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .wallet-balance {
-  font-weight: 500;
+  font-weight: 600;
   color: #1a1a26;
+  background: linear-gradient(90deg, #9b87f5, #7E69AB);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .network-warning {
@@ -180,6 +216,21 @@
 
 .network-warning-icon {
   color: #d97706;
+}
+
+.blind-auction-notice {
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.blind-auction-notice-icon {
+  color: #f59e0b;
 }
 
 @media (min-width: 768px) {

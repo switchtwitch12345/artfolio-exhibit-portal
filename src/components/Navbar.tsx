@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Gavel } from "lucide-react";
+import { Menu, X, Gavel, Wallet } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import WalletConnector from "@/components/WalletConnector";
 
@@ -28,7 +28,7 @@ const Navbar = () => {
   const navigationLinks = [
     { name: "Home", path: "/" },
     { name: "Gallery", path: "/gallery" },
-    { name: "Auctions", path: "/auctions" },
+    { name: "Auctions", path: "/auctions", icon: <Gavel size={16} className="ml-1" />, highlight: true },
     { name: "About", path: "/about" },
   ];
 
@@ -50,10 +50,10 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''}`}
+              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''} ${link.highlight ? 'bg-green-100 text-green-700 font-medium px-3 py-1 rounded-full flex items-center' : ''}`}
             >
               {link.name}
-              {link.name === "Auctions" && <Gavel size={16} className="ml-1" />}
+              {link.icon}
             </Link>
           ))}
           <div className="navbar-separator" />
@@ -93,10 +93,10 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''}`}
+              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''} ${link.highlight ? 'bg-green-100 text-green-700 font-medium px-3 py-1 rounded-full flex items-center justify-center my-2' : ''}`}
             >
               {link.name}
-              {link.name === "Auctions" && <Gavel size={16} className="ml-1" />}
+              {link.icon}
             </Link>
           ))}
           
