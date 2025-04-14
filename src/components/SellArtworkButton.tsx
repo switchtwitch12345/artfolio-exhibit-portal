@@ -16,12 +16,12 @@ const SellArtworkButton = ({ artworkId }: SellArtworkButtonProps) => {
     return (
       <div className="space-y-3">
         <Button 
-          variant="outline" 
+          variant="wallet" 
           onClick={connectWallet} 
-          className="gap-2 w-full border-2 border-purple-400 bg-purple-50 text-purple-600"
+          className="gap-2 w-full"
           size="xl"
         >
-          <Wallet size={20} className="text-purple-600" />
+          <Wallet size={20} className="text-white" />
           Connect Wallet
         </Button>
         <p className="text-sm text-center text-muted-foreground">Connect your wallet to create an auction for this artwork</p>

@@ -21,6 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         auction: "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-lg font-bold transform hover:scale-105 transition-all duration-300 border border-green-400",
         bid: "bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600 shadow-lg font-bold transform hover:scale-105 transition-all duration-300 border border-orange-400",
+        wallet: "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg font-bold transform hover:scale-105 transition-all duration-300 border border-blue-400",
       },
       size: {
         default: "h-10 px-4 py-2",

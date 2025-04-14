@@ -47,8 +47,8 @@ const WalletConnector = () => {
         </Link>
         <Button 
           onClick={connectWallet} 
-          variant="secondary" 
-          className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold border-blue-400"
+          variant="wallet" 
+          className="gap-2"
         >
           <Wallet size={18} />
           Connect Wallet
@@ -84,10 +84,10 @@ const WalletConnector = () => {
       </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-300">
-            <Wallet size={18} className="text-purple-600" />
+          <Button variant="wallet" className="gap-2">
+            <Wallet size={18} className="text-white" />
             {formatAddress(account || '')}
-            <ChevronDown size={16} className="text-purple-600" />
+            <ChevronDown size={16} className="text-white" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-64 bg-gradient-to-r from-purple-50 to-white">

@@ -84,7 +84,7 @@ const Auctions = () => {
               </Button>
             </Link>
           ) : (
-            <Button onClick={connectWallet} variant="outline" className="gap-2 mt-6" size="xl">
+            <Button onClick={connectWallet} variant="wallet" className="gap-2 mt-6" size="xl">
               <Wallet size={18} />
               Connect Wallet to Participate
             </Button>
@@ -92,11 +92,11 @@ const Auctions = () => {
         </div>
         
         <Tabs defaultValue="active" value={tabValue} onValueChange={setTabValue} className="mb-6">
-          <TabsList className="bg-purple-100">
-            <TabsTrigger value="active" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+          <TabsList className="bg-gradient-to-r from-purple-100 to-blue-100 p-1">
+            <TabsTrigger value="active" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-700 data-[state=active]:text-white">
               Active Auctions
             </TabsTrigger>
-            <TabsTrigger value="all" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="all" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-700 data-[state=active]:text-white">
               All Auctions
             </TabsTrigger>
           </TabsList>

@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Gavel, Wallet } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import WalletConnector from "@/components/WalletConnector";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,18 +48,30 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <nav className="navbar-nav">
           {navigationLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''} ${
-                link.highlight 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white font-medium px-4 py-2 rounded-full flex items-center shadow-md hover:from-green-600 hover:to-green-700' 
-                  : ''
-              }`}
-            >
-              {link.name}
-              {link.icon}
-            </Link>
+            link.highlight ? (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="nav-highlight-link"
+              >
+                <Button 
+                  variant="auction" 
+                  size="sm" 
+                  className="flex items-center gap-1"
+                >
+                  {link.name}
+                  {link.icon}
+                </Button>
+              </Link>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''}`}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
           <div className="navbar-separator" />
           {isAuthenticated ? (
@@ -94,18 +107,29 @@ const Navbar = () => {
       <div className={`navbar-mobile-menu ${isMobileMenuOpen ? 'visible' : 'hidden'}`}>
         <nav className="navbar-mobile-nav">
           {navigationLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''} ${
-                link.highlight 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white font-bold px-4 py-2 rounded-full flex items-center justify-center my-2 shadow-md hover:from-green-600 hover:to-green-700' 
-                  : ''
-              }`}
-            >
-              {link.name}
-              {link.icon}
-            </Link>
+            link.highlight ? (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="w-full my-2"
+              >
+                <Button 
+                  variant="auction" 
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  {link.name}
+                  {link.icon}
+                </Button>
+              </Link>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''}`}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
           
           <div className="py-4">
