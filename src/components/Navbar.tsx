@@ -50,7 +50,11 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''} ${link.highlight ? 'bg-green-100 text-green-700 font-medium px-3 py-1 rounded-full flex items-center' : ''}`}
+              className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''} ${
+                link.highlight 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white font-medium px-4 py-2 rounded-full flex items-center shadow-md hover:from-green-600 hover:to-green-700' 
+                  : ''
+              }`}
             >
               {link.name}
               {link.icon}
@@ -93,7 +97,11 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''} ${link.highlight ? 'bg-green-100 text-green-700 font-medium px-3 py-1 rounded-full flex items-center justify-center my-2' : ''}`}
+              className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''} ${
+                link.highlight 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white font-bold px-4 py-2 rounded-full flex items-center justify-center my-2 shadow-md hover:from-green-600 hover:to-green-700' 
+                  : ''
+              }`}
             >
               {link.name}
               {link.icon}

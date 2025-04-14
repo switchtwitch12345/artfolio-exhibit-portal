@@ -18,7 +18,7 @@ const SellArtworkButton = ({ artworkId }: SellArtworkButtonProps) => {
         <Button 
           variant="outline" 
           onClick={connectWallet} 
-          className="gap-2 w-full border-2 border-purple-400 bg-purple-50"
+          className="gap-2 w-full border-2 border-purple-400 bg-purple-50 text-purple-600"
           size="xl"
         >
           <Wallet size={20} className="text-purple-600" />
@@ -32,7 +32,7 @@ const SellArtworkButton = ({ artworkId }: SellArtworkButtonProps) => {
   return (
     <div className="space-y-3">
       <Link to={`/create-auction/${artworkId}`} className="w-full">
-        <Button variant="auction" className="gap-2 w-full" size="xl">
+        <Button variant="auction" className="gap-2 w-full text-white" size="xl">
           <Gavel size={20} />
           Sell as NFT Auction
         </Button>

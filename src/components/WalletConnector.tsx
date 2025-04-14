@@ -40,12 +40,16 @@ const WalletConnector = () => {
     return (
       <div className="flex gap-2">
         <Link to="/auctions">
-          <Button variant="auction" className="gap-2 font-bold">
+          <Button variant="auction" className="gap-2 font-bold text-white">
             <Gavel size={18} />
             Auctions
           </Button>
         </Link>
-        <Button onClick={connectWallet} variant="secondary" className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 font-bold">
+        <Button 
+          onClick={connectWallet} 
+          variant="secondary" 
+          className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold border-blue-400"
+        >
           <Wallet size={18} />
           Connect Wallet
         </Button>
@@ -57,12 +61,12 @@ const WalletConnector = () => {
     return (
       <div className="flex gap-2">
         <Link to="/auctions">
-          <Button variant="auction" className="gap-2 font-bold">
+          <Button variant="auction" className="gap-2 font-bold text-white">
             <Gavel size={18} />
             Auctions
           </Button>
         </Link>
-        <Button onClick={switchNetwork} variant="destructive" className="gap-2">
+        <Button onClick={switchNetwork} variant="destructive" className="gap-2 text-white">
           <AlertTriangle size={18} />
           Switch Network
         </Button>
@@ -73,7 +77,7 @@ const WalletConnector = () => {
   return (
     <div className="flex gap-2">
       <Link to="/auctions">
-        <Button variant="auction" className="gap-2 font-bold">
+        <Button variant="auction" className="gap-2 font-bold text-white">
           <Gavel size={18} />
           Auctions
         </Button>

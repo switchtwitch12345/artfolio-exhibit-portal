@@ -41,8 +41,35 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
   // Check if user is on the correct network
   const isCorrectNetwork = chainId === requiredChainId;
 
+  // Initialize contract immediately with a provider
   useEffect(() => {
-    checkIfWalletIsConnected();
+    // Initialize provider without requiring wallet connection
+    const initializeReadOnlyProvider = async () => {
+      try {
+        // Use ethers.providers.JsonRpcProvider for read-only operations
+        const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+        
+        // Initialize contract with read-only provider
+        const contract = new ethers.Contract(
+          contractAddress,
+          ArtAuctionArtifact.abi,
+          provider
+        );
+        
+        setContract(contract);
+        console.log("Contract initialized with read-only provider");
+      } catch (error) {
+        console.error("Failed to initialize contract with read-only provider:", error);
+      }
+    };
+
+    // Check if wallet is connected first
+    if (window.ethereum) {
+      checkIfWalletIsConnected();
+    } else {
+      // If no wallet, initialize with read-only provider
+      initializeReadOnlyProvider();
+    }
     
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => window.location.reload());
@@ -57,10 +84,11 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
+  // Re-initialize contract when provider changes
   useEffect(() => {
-    // Initialize contract regardless of wallet connection
-    // This ensures contract is available for viewing auctions
-    initializeContract();
+    if (provider) {
+      initializeContractWithProvider();
+    }
   }, [provider]);
 
   const checkIfWalletIsConnected = async () => {
@@ -106,7 +134,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const initializeContract = async () => {
+  const initializeContractWithProvider = async () => {
     if (!provider) {
       console.log("Provider not available for contract initialization");
       return;
@@ -124,7 +152,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
       );
       
       setContract(contract);
-      console.log("Contract initialized successfully");
+      console.log("Contract initialized successfully with provider");
     } catch (error) {
       console.error("Failed to initialize contract:", error);
       toast.error("Failed to connect to the auction contract");
