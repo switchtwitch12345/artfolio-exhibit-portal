@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { toast } from 'sonner';
@@ -34,7 +35,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   // Contract details - would normally come from config file
-  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS || '';
+  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS || '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Fallback to default address
   const requiredChainId = 1337; // Localhost/Hardhat default chainId
 
   // Check if user is on the correct network
@@ -57,15 +58,15 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (account && provider && contractAddress) {
-      initializeContract();
-    }
-  }, [account, provider, contractAddress]);
+    // Initialize contract regardless of wallet connection
+    // This ensures contract is available for viewing auctions
+    initializeContract();
+  }, [provider]);
 
   const checkIfWalletIsConnected = async () => {
     try {
       if (!window.ethereum) {
-        toast.error("Please install MetaMask to use this feature");
+        console.log("MetaMask not installed");
         return;
       }
 
@@ -106,16 +107,24 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
   };
 
   const initializeContract = async () => {
-    if (!provider || !contractAddress) return;
+    if (!provider) {
+      console.log("Provider not available for contract initialization");
+      return;
+    }
 
     try {
-      const signer = provider.getSigner();
+      // For read-only operations, use provider
+      // For write operations that require signing, this will be replaced with signer in relevant methods
+      console.log("Initializing contract at address:", contractAddress);
+      
       const contract = new ethers.Contract(
         contractAddress,
         ArtAuctionArtifact.abi,
-        signer
+        provider
       );
+      
       setContract(contract);
+      console.log("Contract initialized successfully");
     } catch (error) {
       console.error("Failed to initialize contract:", error);
       toast.error("Failed to connect to the auction contract");
@@ -153,9 +162,28 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
       if (network.chainId !== requiredChainId) {
         toast.warning("Please switch to the correct network");
       }
+      
+      // Re-initialize contract with signer after wallet connection
+      initializeContractWithSigner(provider, account);
+      
     } catch (error) {
       console.error("Error connecting wallet:", error);
       toast.error("Failed to connect wallet");
+    }
+  };
+  
+  const initializeContractWithSigner = async (provider: ethers.providers.Web3Provider, account: string) => {
+    try {
+      const signer = provider.getSigner(account);
+      const contract = new ethers.Contract(
+        contractAddress,
+        ArtAuctionArtifact.abi,
+        signer
+      );
+      setContract(contract);
+      console.log("Contract initialized with signer");
+    } catch (error) {
+      console.error("Failed to initialize contract with signer:", error);
     }
   };
 
@@ -199,7 +227,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
     setAccount(null);
     setBalance(null);
     setIsConnected(false);
-    setContract(null);
+    // Don't reset contract here to allow read-only operations
     toast.info("Wallet disconnected");
   };
 

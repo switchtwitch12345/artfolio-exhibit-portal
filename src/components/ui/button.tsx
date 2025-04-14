@@ -10,17 +10,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-purple-600 text-white hover:bg-purple-700 shadow-md",
+        default: "bg-purple-600 text-white hover:bg-purple-700 shadow-md font-semibold transform hover:scale-105 transition-all duration-300",
         destructive:
-          "bg-red-500 text-white hover:bg-red-600 shadow-md",
+          "bg-red-500 text-white hover:bg-red-600 shadow-md font-semibold transform hover:scale-105 transition-all duration-300",
         outline:
-          "border-2 border-purple-400 bg-background hover:bg-purple-100 hover:text-purple-700 text-purple-600",
+          "border-2 border-purple-400 bg-background hover:bg-purple-100 hover:text-purple-700 text-purple-600 font-semibold transform hover:scale-105 transition-all duration-300",
         secondary:
-          "bg-blue-500 text-white hover:bg-blue-600 shadow-md",
+          "bg-blue-500 text-white hover:bg-blue-600 shadow-md font-semibold transform hover:scale-105 transition-all duration-300",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        auction: "bg-green-600 text-white hover:bg-green-700 shadow-md font-semibold",
-        bid: "bg-orange-500 text-white hover:bg-orange-600 shadow-md font-semibold",
+        auction: "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-lg font-bold transform hover:scale-105 transition-all duration-300 border border-green-400",
+        bid: "bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600 shadow-lg font-bold transform hover:scale-105 transition-all duration-300 border border-orange-400",
       },
       size: {
         default: "h-10 px-4 py-2",

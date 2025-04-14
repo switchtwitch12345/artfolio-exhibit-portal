@@ -24,12 +24,27 @@ export const useAuction = () => {
   const { contract, account, isConnected, provider } = useWeb3();
   const [loading, setLoading] = useState(false);
 
+  // Helper to get contract with signer for write operations
+  const getSignedContract = async () => {
+    if (!contract || !provider || !isConnected) {
+      toast.error('Please connect your wallet first');
+      return null;
+    }
+    
+    try {
+      const signer = provider.getSigner();
+      return contract.connect(signer);
+    } catch (error) {
+      console.error('Error getting signed contract:', error);
+      toast.error('Failed to prepare transaction');
+      return null;
+    }
+  };
+
   const createAuction = useCallback(
     async (artwork: Artwork, startingPrice: string, durationHours: number) => {
-      if (!contract || !isConnected) {
-        toast.error('Please connect your wallet first');
-        return null;
-      }
+      const signedContract = await getSignedContract();
+      if (!signedContract) return null;
 
       try {
         setLoading(true);
@@ -38,7 +53,7 @@ export const useAuction = () => {
         const priceInWei = ethers.utils.parseEther(startingPrice);
         
         // Create auction transaction
-        const tx = await contract.createAuction(
+        const tx = await signedContract.createAuction(
           artwork.id,
           artwork.title,
           artwork.imageUrl,
@@ -66,15 +81,13 @@ export const useAuction = () => {
         setLoading(false);
       }
     },
-    [contract, isConnected]
+    [contract, isConnected, provider]
   );
 
   const placeBid = useCallback(
     async (auctionId: number, bidAmount: string) => {
-      if (!contract || !isConnected) {
-        toast.error('Please connect your wallet first');
-        return false;
-      }
+      const signedContract = await getSignedContract();
+      if (!signedContract) return false;
 
       try {
         setLoading(true);
@@ -83,7 +96,7 @@ export const useAuction = () => {
         const bidInWei = ethers.utils.parseEther(bidAmount);
         
         // Place bid transaction
-        const tx = await contract.placeBid(auctionId, {
+        const tx = await signedContract.placeBid(auctionId, {
           value: bidInWei,
         });
         
@@ -111,21 +124,19 @@ export const useAuction = () => {
         setLoading(false);
       }
     },
-    [contract, isConnected]
+    [contract, isConnected, provider]
   );
 
   const endAuction = useCallback(
     async (auctionId: number) => {
-      if (!contract || !isConnected) {
-        toast.error('Please connect your wallet first');
-        return false;
-      }
+      const signedContract = await getSignedContract();
+      if (!signedContract) return false;
 
       try {
         setLoading(true);
         
         // End auction transaction
-        const tx = await contract.endAuction(auctionId);
+        const tx = await signedContract.endAuction(auctionId);
         
         toast.info('Ending auction... Please wait');
         
@@ -142,20 +153,18 @@ export const useAuction = () => {
         setLoading(false);
       }
     },
-    [contract, isConnected]
+    [contract, isConnected, provider]
   );
 
   const withdrawFunds = useCallback(async () => {
-    if (!contract || !isConnected) {
-      toast.error('Please connect your wallet first');
-      return false;
-    }
+    const signedContract = await getSignedContract();
+    if (!signedContract) return false;
 
     try {
       setLoading(true);
       
       // Withdraw funds transaction
-      const tx = await contract.withdraw();
+      const tx = await signedContract.withdraw();
       
       toast.info('Withdrawing funds... Please wait');
       
@@ -171,12 +180,12 @@ export const useAuction = () => {
     } finally {
       setLoading(false);
     }
-  }, [contract, isConnected]);
+  }, [contract, isConnected, provider]);
 
   const getAuction = useCallback(
     async (auctionId: number): Promise<AuctionData | null> => {
       if (!contract) {
-        toast.error('Smart contract not initialized');
+        console.error('Smart contract not initialized');
         return null;
       }
 
@@ -213,7 +222,7 @@ export const useAuction = () => {
 
   const getAllAuctions = useCallback(async (): Promise<AuctionData[]> => {
     if (!contract) {
-      toast.error('Smart contract not initialized');
+      console.error('Smart contract not initialized');
       return [];
     }
 
@@ -248,7 +257,7 @@ export const useAuction = () => {
 
   const getActiveAuctions = useCallback(async (): Promise<AuctionData[]> => {
     if (!contract) {
-      toast.error('Smart contract not initialized');
+      console.error('Smart contract not initialized');
       return [];
     }
 

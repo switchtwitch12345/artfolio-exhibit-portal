@@ -40,13 +40,13 @@ const WalletConnector = () => {
     return (
       <div className="flex gap-2">
         <Link to="/auctions">
-          <Button variant="outline" className="gap-2">
-            <Gavel size={16} />
+          <Button variant="auction" className="gap-2 font-bold">
+            <Gavel size={18} />
             Auctions
           </Button>
         </Link>
-        <Button onClick={connectWallet} variant="outline" className="gap-2">
-          <Wallet size={16} />
+        <Button onClick={connectWallet} variant="secondary" className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 font-bold">
+          <Wallet size={18} />
           Connect Wallet
         </Button>
       </div>
@@ -57,13 +57,13 @@ const WalletConnector = () => {
     return (
       <div className="flex gap-2">
         <Link to="/auctions">
-          <Button variant="outline" className="gap-2">
-            <Gavel size={16} />
+          <Button variant="auction" className="gap-2 font-bold">
+            <Gavel size={18} />
             Auctions
           </Button>
         </Link>
         <Button onClick={switchNetwork} variant="destructive" className="gap-2">
-          <AlertTriangle size={16} />
+          <AlertTriangle size={18} />
           Switch Network
         </Button>
       </div>
@@ -73,50 +73,50 @@ const WalletConnector = () => {
   return (
     <div className="flex gap-2">
       <Link to="/auctions">
-        <Button variant="outline" className="gap-2">
-          <Gavel size={16} />
+        <Button variant="auction" className="gap-2 font-bold">
+          <Gavel size={18} />
           Auctions
         </Button>
       </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2">
-            <Wallet size={16} />
+          <Button variant="outline" className="gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-300">
+            <Wallet size={18} className="text-purple-600" />
             {formatAddress(account || '')}
-            <ChevronDown size={16} />
+            <ChevronDown size={16} className="text-purple-600" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent align="end" className="w-64 bg-gradient-to-r from-purple-50 to-white">
           <DropdownMenuLabel>My Wallet</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex flex-col items-start gap-1">
             <span className="text-xs text-muted-foreground">Address</span>
-            <span className="font-mono text-sm">{formatAddress(account || '')}</span>
+            <span className="font-mono text-sm font-bold text-purple-700">{formatAddress(account || '')}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex flex-col items-start gap-1">
             <span className="text-xs text-muted-foreground">Balance</span>
-            <span className="font-mono text-sm">{parseFloat(balance || '0').toFixed(4)} ETH</span>
+            <span className="font-mono text-sm font-bold text-purple-700">{parseFloat(balance || '0').toFixed(4)} ETH</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link to="/auctions" className="gap-2 w-full flex items-center">
-              <Gavel size={16} />
-              Browse Auctions
+              <Gavel size={16} className="text-green-600" />
+              <span className="font-medium">Browse Auctions</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem 
             onClick={() => window.open(`https://etherscan.io/address/${account}`, '_blank')}
             className="gap-2"
           >
-            <ExternalLink size={16} />
-            View on Etherscan
+            <ExternalLink size={16} className="text-blue-600" />
+            <span className="font-medium">View on Etherscan</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             onClick={disconnect}
-            className="gap-2 text-destructive"
+            className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
           >
             <LogOut size={16} />
-            Disconnect
+            <span className="font-medium">Disconnect</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
