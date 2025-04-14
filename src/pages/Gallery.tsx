@@ -5,7 +5,9 @@ import { artworks, students } from "@/utils/mockData";
 import ArtCard from "@/components/ArtCard";
 import Filter from "@/components/Filter";
 import AnimatedLayout from "@/components/AnimatedLayout";
-import { Layers } from "lucide-react";
+import { Layers, Gavel } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Gallery = () => {
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
@@ -32,6 +34,18 @@ const Gallery = () => {
               Explore the diverse collection of artwork created by our talented students. 
               Filter by student name to discover individual artistic journeys.
             </p>
+            
+            <div className="mt-4">
+              <Link to="/auctions">
+                <Button className="gap-2 bg-green-600 hover:bg-green-700">
+                  <Gavel size={16} />
+                  Browse NFT Auctions
+                </Button>
+              </Link>
+              <p className="mt-2 text-sm text-muted-foreground">
+                View and bid on artworks using cryptocurrency
+              </p>
+            </div>
           </motion.div>
 
           <div className="gallery-filter-container">

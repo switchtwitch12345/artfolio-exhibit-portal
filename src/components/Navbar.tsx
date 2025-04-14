@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Gavel } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import WalletConnector from "@/components/WalletConnector";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,6 +28,7 @@ const Navbar = () => {
   const navigationLinks = [
     { name: "Home", path: "/" },
     { name: "Gallery", path: "/gallery" },
+    { name: "Auctions", path: "/auctions" },
     { name: "About", path: "/about" },
   ];
 
@@ -51,6 +53,7 @@ const Navbar = () => {
               className={`navbar-nav-item ${location.pathname === link.path ? 'active' : ''}`}
             >
               {link.name}
+              {link.name === "Auctions" && <Gavel size={16} className="ml-1" />}
             </Link>
           ))}
           <div className="navbar-separator" />
@@ -64,6 +67,10 @@ const Navbar = () => {
             </Link>
           )}
         </nav>
+
+        <div className="ml-auto hidden md:block">
+          <WalletConnector />
+        </div>
 
         {/* Mobile Menu Button */}
         <button
@@ -89,8 +96,14 @@ const Navbar = () => {
               className={`navbar-mobile-nav-item ${location.pathname === link.path ? 'active' : ''}`}
             >
               {link.name}
+              {link.name === "Auctions" && <Gavel size={16} className="ml-1" />}
             </Link>
           ))}
+          
+          <div className="py-4">
+            <WalletConnector />
+          </div>
+          
           {isAuthenticated ? (
             <button onClick={handleLogout} className="navbar-mobile-log-out">
               Log Out
